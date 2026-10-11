@@ -424,8 +424,7 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 
 /* ---------------- プレビュー ---------------- */
 
-.preview-pane { position: sticky; top: 88px; }
-@media (max-width: 1080px) { .preview-pane { position: static; } }
+.preview-pane { position: static; }
 
 .preview-bar {
   display: flex;
