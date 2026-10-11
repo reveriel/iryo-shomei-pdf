@@ -197,12 +197,13 @@
       'xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="印" focusable="false">');
 
     parts.push('<defs>');
-    parts.push('<filter id="' + uid + '-f" x="-20%" y="-20%" width="140%" height="140%">' +
-      '<feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="' + seed + '" result="warp"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="warp" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="rough"/>' +
-      '<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="' + (seed + 11) + '" result="grain"/>' +
-      '<feColorMatrix in="grain" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.5 -0.2" result="grainMask"/>' +
-      '<feComposite in="rough" in2="grainMask" operator="in" result="stamped"/>' +
+    // 印影らしさは「几何变形」ではなく「印泥的浓淡不均 + 局部缺失」で出す。
+    // 圆框・文字は幾何学的に完全なまま、alpha だけをノイズで変調する（変位なし）。
+    parts.push('<filter id="' + uid + '-f" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="4" seed="' + seed + '" result="noise"/>' +
+      '<feComponentTransfer in="noise" result="mask"><feFuncA type="table" tableValues="0 0.25 0.65 0.95 1 1 1"/></feComponentTransfer>' +
+      '<feComposite in="SourceGraphic" in2="mask" operator="in" result="stamped"/>' +
+      '<feComponentTransfer in="stamped"><feFuncA type="linear" slope="1.35" intercept="0"/></feComponentTransfer>' +
       '</filter>');
     // 円弧テキスト用のパス（上部の半円・左→上→右）
     parts.push('<path id="' + uid + '-p" d="M16 50 A34 34 0 0 1 50 16 A34 34 0 0 1 84 50"/>');
