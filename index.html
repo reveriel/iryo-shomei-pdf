@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>医療証明書類 PDF 生成ツール｜領収書・診療明細書・診断書をまとめて作成</title>
+<meta name="description" content="1回の入力で、領収書・診療明細書・診断書（見本）の3通をA4 PDFとしてまとめて作成・印刷できる無料ツール。日本語の医療書類の形式を確認したい方、下書きを用意したい方のためのテンプレートです。登録不要、すべてブラウザ内で完結します。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.reveriel.com/iryo-shomei-pdf/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="医療証明書類 PDF 生成ツール｜領収書・診療明細書・診断書">
+<meta property="og:description" content="1回の入力で、領収書・診療明細書・診断書（見本）の3通をA4 PDFとしてまとめて作成できます。無料・登録不要。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://www.reveriel.com/iryo-shomei-pdf/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f54'/%3E%3Cpath d='M16 5v22M5 16h22' stroke='%23ffffff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6fc01bf3ac5e457ba1bd16b91e5b653e"}'></script><!-- End Cloudflare Web Analytics -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "医療証明書類 PDF 生成ツール",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "url": "https://www.reveriel.com/iryo-shomei-pdf/",
+      "description": "1回の入力で、領収書・診療明細書・診断書（見本）の3通をA4 PDFとしてまとめて作成・印刷できるブラウザ完結型ツール。",
+      "inLanguage": "ja",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "featureList": [
+        "領収書・診療明細書・診断書の3通を1フォームからまとめて作成",
+        "領収金額の大字（漢数字）表示",
+        "診療明細の点数・金額の自動集計と負担割合（1割・2割・3割）の自動計算",
+        "診断書の「見本」透かし表示",
+        "A4 PDF 出力・印刷、中文／日本語の画面切り替え",
+        "入力内容はブラウザ内のみで処理"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "診断書は自分で作れますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "診断書は医師法にもとづき医師が作成・署名・押印する書類であり、患者本人や第三者が作成したものは正式な診断書として扱われません。本ツールが出力する診断書は「見本」の透かしが入った下書き用テンプレートであり、提出用の正式な書類として使用することはできません。実際に必要な場合は必ず医療機関に依頼してください。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "このツールの医療費明細は正式なものですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ。本ツールで作成できる診療明細書は、医療機関が発行する正式な明細書の形式を確認したり、内容を整理したりするための下書き用テンプレートです。保険点数・金額・負担割合は入力値をもとに単純計算しているだけで、実際の診療報酬請求の内容を保証するものではありません。正式な明細書は医療機関から交付を受けてください。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "領収書はこのツールで作ったものでも使えますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "支払いの事実を証明する正式な領収書は、医療機関が発行するものです。本ツールの領収書は、記載項目や書式を確認するための形式参考・下書き用であり、医療機関が発行した領収書の代わりとして提出することはできません。医療費控除や保険請求には、医療機関から交付された原本をご使用ください。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "診察日と発行日はどう使い分けますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "診察日は実際に受診した日、発行日は書類を発行する日です。領収書や診療明細書では受診した日（診察日）と発行日が異なることが一般的です。本ツールでは診察日と発行日を別々に入力でき、年齢は診察日を基準に自動計算します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "入力した内容はサーバーに送信されますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ。入力内容はサーバーへ送信されず、お使いの端末のブラウザ内だけで処理されます。ページを閉じると内容は破棄されます。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="currentColor"/>
+        <path d="M16 6v20M6 16h20" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-text">
+        <strong data-i18n="brandName">医療証明書類 作成ツール</strong>
+        <span data-i18n="tagline">免费・无需注册・浏览器内完成</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="btn btn-ghost" id="langBtn" aria-label="表示言語を切り替える">日本語</button>
+      <button type="button" class="btn btn-primary" id="printBtn">
+        <svg viewBox="0 0 20 20" aria-hidden="true" class="ic">
+          <path d="M6 7V3h8v4M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-4A1.5 1.5 0 0 1 4.5 8h11A1.5 1.5 0 0 1 17 9.5v4a1.5 1.5 0 0 1-1.5 1.5H14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="6" y="12" width="8" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span data-i18n="btnPrint">打印 / 保存 PDF</span>
+      </button>
+      <button type="button" class="btn btn-ghost" id="resetBtn" data-i18n="btnReset">清空重填</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap layout">
+
+  <!-- ============ 入力フォーム ============ -->
+  <section class="pane form-pane no-print" aria-label="入力フォーム">
+    <div class="pane-head">
+      <h2 data-i18n="formTitle">输入一次就诊信息，生成一套凭证</h2>
+      <p class="hint" data-i18n="formHint">左侧填写，右侧实时预览三张日文凭证。最后点「打印 / 保存 PDF」合并输出为一份 A4 PDF。</p>
+    </div>
+
+    <!-- 合規の注意書き（中英併記・常時表示） -->
+    <div class="legal-note" role="note">
+      <svg viewBox="0 0 20 20" aria-hidden="true" class="ic">
+        <path d="M10 2.5 1.5 17h17L10 2.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M10 8v4.2M10 14.6v.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <strong data-i18n="legalTitle">本工具为格式参考・下書き模板</strong>
+        <p data-i18n="legalZh">本工具为就诊凭证的格式参考与下書き模板。正式的領収書・診療明細書由医疗机构开具，正式診断書必须由医师作成・署名・押印。本工具生成的文书不能作为正式凭证提交。</p>
+        <p class="legal-ja" lang="ja">本ツールは診療に関する書類の形式確認・下書き用テンプレートです。正式な診断書は必ず医師が作成・署名・押印したものをご使用ください。</p>
+      </div>
+    </div>
+
+    <form id="iryoForm" autocomplete="off" novalidate>
+
+      <!-- ---------- 共通項目 ---------- -->
+      <fieldset class="card">
+        <legend><span data-i18n="legendCommon">基本信息（三张凭证共用）</span><span class="req-badge" data-i18n="badgeOnce">填一次即可</span></legend>
+
+        <div class="field">
+          <label for="instName" data-i18n="lblInstName">医疗机构名称</label>
+          <input type="text" id="instName" name="instName" data-i18n-ph="phInst" placeholder="例：佐藤内科クリニック">
+        </div>
+
+        <div class="field">
+          <label for="instAddress" data-i18n="lblInstAddress">所在地（地址）</label>
+          <input type="text" id="instAddress" name="instAddress" placeholder="〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="instTel" data-i18n="lblInstTel">电话号码</label>
+            <input type="text" id="instTel" name="instTel" inputmode="tel" placeholder="03-1234-5678">
+          </div>
+          <div class="field">
+            <label for="doctorName" data-i18n="lblDoctor">医师姓名</label>
+            <input type="text" id="doctorName" name="doctorName" data-i18n-ph="phDoctor" placeholder="例：佐藤 一郎">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="patientName" data-i18n="lblPatient">患者姓名</label>
+            <input type="text" id="patientName" name="patientName" data-i18n-ph="phPatient" placeholder="例：田中 健太">
+          </div>
+          <div class="field">
+            <label for="patientKana" data-i18n="lblKana">フリガナ（假名）</label>
+            <input type="text" id="patientKana" name="patientKana" data-i18n-ph="phKana" placeholder="例：タナカ ケンタ">
+          </div>
+        </div>
+
+        <div class="field-row three">
+          <div class="field">
+            <label for="sex" data-i18n="lblSex">性别</label>
+            <select id="sex" name="sex">
+              <option value="男性">男性</option>
+              <option value="女性">女性</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="birthDate" data-i18n="lblBirth">出生日期</label>
+            <input type="date" id="birthDate" name="birthDate">
+          </div>
+          <div class="field">
+            <label for="ageOut" data-i18n="lblAge">年龄（自动计算）</label>
+            <input type="text" id="ageOut" name="ageOut" readonly tabindex="-1">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="visitDate" data-i18n="lblVisitDate">就诊日期</label>
+            <input type="date" id="visitDate" name="visitDate">
+          </div>
+          <div class="field">
+            <label for="issueDate" data-i18n="lblIssueDate">发行日期</label>
+            <input type="date" id="issueDate" name="issueDate">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="department" data-i18n="lblDept">诊疗科</label>
+            <input type="text" id="department" name="department" data-i18n-ph="phDept" placeholder="例：内科">
+          </div>
+          <div class="field">
+            <label for="diseaseName" data-i18n="lblDisease">傷病名（病名）</label>
+            <input type="text" id="diseaseName" name="diseaseName" data-i18n-ph="phDisease" placeholder="例：高血圧症">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ---------- ① 領収書 ---------- -->
+      <fieldset class="card">
+        <legend><span data-i18n="legendReceipt">① 領収書（收据）</span><span class="req-badge">領収書</span></legend>
+
+        <div class="field">
+          <label class="check-line" for="linkReceipt">
+            <input type="checkbox" id="linkReceipt" name="linkReceipt" checked>
+            <span data-i18n="chkLink">领收金额与明细的自付额联动</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label for="receiptAmount" data-i18n="lblReceiptAmount">領収金額（自己负担额）</label>
+          <input type="text" id="receiptAmount" name="receiptAmount" class="num" inputmode="numeric" placeholder="0">
+          <p class="help" data-i18n="helpReceiptAmount">输入金额即可。勾选上方联动时，此处自动采用诊疗明细的「自己負担額」。</p>
+        </div>
+
+        <div class="field">
+          <label for="proviso" data-i18n="lblProviso">但書（用途）</label>
+          <input type="text" id="proviso" name="proviso" value="診療費として">
+        </div>
+
+        <div class="field">
+          <label for="receiptNo" data-i18n="lblReceiptNo">領収番号</label>
+          <input type="text" id="receiptNo" name="receiptNo" placeholder="RY-2026-0001">
+        </div>
+      </fieldset>
+
+      <!-- ---------- ② 診療明細書 ---------- -->
+      <fieldset class="card">
+        <legend><span data-i18n="legendStatement">② 診療明細書（费用明细）</span><span class="req-badge" data-i18n="badgeAuto">自动汇总</span></legend>
+
+        <div class="field">
+          <label data-i18n="lblRows">明细行（项目・点数・金额）</label>
+          <div class="rows" id="detailRows">
+            <div class="detail-row row-head">
+              <span data-i18n="thItemName">项目名</span>
+              <span data-i18n="thPoints">保険点数</span>
+              <span data-i18n="thAmount">金額（円）</span>
+              <span class="sr-only"></span>
+            </div>
+            <!-- 行は JS が生成 -->
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="addRowBtn">
+            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRow">添加明细行</span>
+          </button>
+          <p class="help" data-i18n="helpRows">点数を入力すると、金額（円）が空のときは 1点＝10円 で自動入力します。金額は自由に変更できます。</p>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="burdenRate" data-i18n="lblBurden">自己负担比例</label>
+            <select id="burdenRate" name="burdenRate">
+              <option value="30" selected>3割（一般の在职者）</option>
+              <option value="20">2割</option>
+              <option value="10">1割（後期高齢者など）</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="selfPayOverride" data-i18n="lblSelfOverride">自己負担額（手动覆盖）</label>
+            <input type="text" id="selfPayOverride" name="selfPayOverride" class="num" inputmode="numeric" placeholder="">
+            <p class="help" data-i18n="helpSelfOverride">留空则由负担比例自动计算。填写后以此金额为准。</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-i18n="lblRx">处方药附记（可选）</label>
+          <div class="rows" id="rxRows">
+            <div class="rx-row row-head">
+              <span data-i18n="thDrug">薬品名</span>
+              <span data-i18n="thUsage">用法・用量</span>
+              <span data-i18n="thDays">日数</span>
+              <span class="sr-only"></span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="addRxBtn">
+            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRx">添加处方药</span>
+          </button>
+        </div>
+      </fieldset>
+
+      <!-- ---------- ③ 診断書 ---------- -->
+      <fieldset class="card">
+        <legend><span data-i18n="legendCertificate">③ 診断書（诊断书・見本）</span><span class="req-badge" data-i18n="badgeSample">带見本水印</span></legend>
+
+        <div class="field">
+          <label for="findings" data-i18n="lblFindings">診断内容・所見</label>
+          <textarea id="findings" name="findings" rows="4" data-i18n-ph="phFindings" placeholder="例：血圧 158/96mmHg。自覚症状は軽度の頭痛。"></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="periodFrom" data-i18n="lblPeriodFrom">疗养期间（自）</label>
+            <input type="date" id="periodFrom" name="periodFrom">
+          </div>
+          <div class="field">
+            <label for="periodTo" data-i18n="lblPeriodTo">疗养期间（至）</label>
+            <input type="date" id="periodTo" name="periodTo">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="outcome" data-i18n="lblOutcome">転帰（转归）</label>
+          <select id="outcome" name="outcome">
+            <option value="治癒">治癒</option>
+            <option value="軽快" selected>軽快</option>
+            <option value="寛解">寛解</option>
+            <option value="不変">不変</option>
+            <option value="増悪">増悪</option>
+            <option value="死亡">死亡</option>
+          </select>
+        </div>
+
+        <p class="seal-note">
+          <svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M8 1.8 3 3.6v3.6c0 2.8 2 5.2 5 6 3-.8 5-3.2 5-6V3.6L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span data-i18n="noteDoctorSeal">正式な診断書は、医師の署名と医療機関の印が必要です。本ツールは署名欄・印欄を空欄で出力します。</span>
+        </p>
+      </fieldset>
+
+      <p class="privacy-note">
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M8 1.5 3 3.5v4c0 3 2.1 5.6 5 6.5 2.9-.9 5-3.5 5-6.5v-4L8 1.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span data-i18n="privacy">输入内容不会发送到服务器，全部只在你的浏览器内处理。关闭页面后内容即被丢弃。</span>
+      </p>
+    </form>
+  </section>
+
+  <!-- ============ プレビュー / 印刷対象 ============ -->
+  <section class="pane preview-pane" aria-label="プレビュー">
+    <div class="preview-bar no-print">
+      <span class="dot"></span> <span data-i18n="previewBar">预览（A4・三张凭证）</span>
+    </div>
+
+    <div class="paper-wrap">
+
+      <!-- ========== ① 領収書 ========== -->
+      <article class="paper" id="docReceipt">
+        <header class="doc-inst">
+          <p class="inst-name" id="pvInstName">佐藤内科クリニック</p>
+          <p class="inst-line" id="pvInstAddress">〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F</p>
+          <p class="inst-line" id="pvInstTel">TEL：03-1234-5678</p>
+        </header>
+
+        <h1 class="doc-title">領 収 書</h1>
+
+        <div class="doc-meta">
+          <p class="doc-meta-line"><span class="meta-label">領収書番号</span><span id="pvReceiptNo">RY-2026-0001</span></p>
+          <p class="doc-meta-line"><span class="meta-label">発行日</span><span id="pvReceiptIssueDate">2026年10月11日</span></p>
+        </div>
+
+        <p class="doc-to"><span id="pvReceiptPatient">田中 健太</span><span class="honorific">様</span></p>
+
+        <div class="amount-band">
+          <span class="amount-label">領収金額</span>
+          <span class="amount-value daiji" id="pvReceiptAmount">金 壱阡捌百弐拾漆円 也</span>
+        </div>
+
+        <p class="proviso">但し、<span id="pvProviso">診療費として</span></p>
+        <p class="receipt-line">上記正に領収いたしました。</p>
+
+        <table class="info-table">
+          <tbody>
+            <tr><th>診療科</th><td id="pvReceiptDept">内科</td><th>診察日</th><td id="pvReceiptVisitDate">2026年10月5日</td></tr>
+            <tr><th>傷病名</th><td id="pvReceiptDisease" colspan="3">高血圧症</td></tr>
+          </tbody>
+        </table>
+
+        <div class="doc-foot">
+          <div class="seal-box">
+            <span class="seal-label">領収印</span>
+          </div>
+          <div class="issuer-block">
+            <p class="issuer-name" id="pvReceiptInst">佐藤内科クリニック</p>
+            <p class="issuer-line" id="pvReceiptAddress">〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F</p>
+            <p class="issuer-line" id="pvReceiptTel">TEL：03-1234-5678</p>
+            <p class="issuer-line" id="pvReceiptDoctor">医師：佐藤 一郎</p>
+          </div>
+        </div>
+
+        <p class="paper-footnote">※ 本領収書は形式確認・下書き用のテンプレートです。正式な領収書は医療機関が発行するものをご使用ください。</p>
+      </article>
+
+      <!-- ========== ② 診療明細書 ========== -->
+      <article class="paper" id="docStatement">
+        <header class="doc-inst">
+          <p class="inst-name" id="pvStmtInstName">佐藤内科クリニック</p>
+          <p class="inst-line" id="pvStmtInstAddress">〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F</p>
+          <p class="inst-line" id="pvStmtInstTel">TEL：03-1234-5678</p>
+        </header>
+
+        <h1 class="doc-title">診療明細書</h1>
+
+        <div class="doc-meta">
+          <p class="doc-meta-line"><span class="meta-label">明細書番号</span><span id="pvStmtNo">RY-2026-0001</span></p>
+          <p class="doc-meta-line"><span class="meta-label">発行日</span><span id="pvStmtIssueDate">2026年10月11日</span></p>
+        </div>
+
+        <table class="patient-table">
+          <tbody>
+            <tr>
+              <th>患者氏名</th><td id="pvStmtPatient">田中 健太</td>
+              <th>フリガナ</th><td id="pvStmtKana">タナカ ケンタ</td>
+            </tr>
+            <tr>
+              <th>性別</th><td id="pvStmtSex">男性</td>
+              <th>生年月日</th><td id="pvStmtBirth">1985年4月12日（<span id="pvStmtAge">41</span>歳）</td>
+            </tr>
+            <tr>
+              <th>診察日</th><td id="pvStmtVisitDate">2026年10月5日</td>
+              <th>診療科</th><td id="pvStmtDept">内科</td>
+            </tr>
+            <tr>
+              <th>傷病名</th><td id="pvStmtDisease" colspan="3">高血圧症</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 class="section-title">診療内容の明細</h2>
+        <table class="detail-table">
+          <thead>
+            <tr><th class="col-name">項目名</th><th class="col-num">保険点数</th><th class="col-num">金額（円）</th></tr>
+          </thead>
+          <tbody id="pvDetailRows"></tbody>
+        </table>
+
+        <table class="summary-table">
+          <tbody>
+            <tr><th>総点数</th><td class="num"><span id="pvTotalPoints">609</span> 点</td></tr>
+            <tr><th>総医療費（10割）</th><td class="num"><span id="pvTotalCost">6,090</span> 円</td></tr>
+            <tr><th>保険給付額（<span id="pvCoveredRate">7</span>割）</th><td class="num"><span id="pvCovered">4,263</span> 円</td></tr>
+            <tr class="self-row"><th>自己負担額（<span id="pvSelfRate">3</span>割）</th><td class="num"><span id="pvSelfPay">1,827</span> 円</td></tr>
+          </tbody>
+        </table>
+
+        <div id="pvRxBlock">
+          <h2 class="section-title">処方薬</h2>
+          <table class="detail-table rx-table">
+            <thead>
+              <tr><th class="col-name">薬品名</th><th class="col-usage">用法・用量</th><th class="col-num">日数</th></tr>
+            </thead>
+            <tbody id="pvRxRows"></tbody>
+          </table>
+        </div>
+
+        <div class="total-band">
+          <span class="total-label">自己負担額（お支払い額）</span>
+          <span class="total-value num" id="pvStmtSelfPay">¥1,827</span>
+        </div>
+
+        <p class="paper-footnote">※ 本明細書は形式確認・下書き用のテンプレートです。点数・金額は入力値をもとに単純計算したもので、正式な診療報酬明細ではありません。</p>
+      </article>
+
+      <!-- ========== ③ 診断書 ========== -->
+      <article class="paper has-watermark" id="docCertificate">
+        <div class="watermark" aria-hidden="true"><span>見本<small>サンプル</small></span></div>
+
+        <header class="doc-inst">
+          <p class="inst-name" id="pvCertInstName">佐藤内科クリニック</p>
+          <p class="inst-line" id="pvCertInstAddress">〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F</p>
+          <p class="inst-line" id="pvCertInstTel">TEL：03-1234-5678</p>
+        </header>
+
+        <h1 class="doc-title">診 断 書</h1>
+
+        <div class="doc-meta">
+          <p class="doc-meta-line"><span class="meta-label">発行日</span><span id="pvCertIssueDate">2026年10月11日</span></p>
+        </div>
+
+        <table class="patient-table">
+          <tbody>
+            <tr>
+              <th>氏名</th><td id="pvCertPatient">田中 健太</td>
+              <th>フリガナ</th><td id="pvCertKana">タナカ ケンタ</td>
+            </tr>
+            <tr>
+              <th>性別</th><td id="pvCertSex">男性</td>
+              <th>生年月日</th><td id="pvCertBirth">1985年4月12日（<span id="pvCertAge">41</span>歳）</td>
+            </tr>
+            <tr>
+              <th>診療科</th><td id="pvCertDept">内科</td>
+              <th>診察日</th><td id="pvCertVisitDate">2026年10月5日</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="cert-table">
+          <tbody>
+            <tr>
+              <th>傷病名</th>
+              <td id="pvCertDisease">高血圧症</td>
+            </tr>
+            <tr>
+              <th>診断内容・所見</th>
+              <td class="pre-line" id="pvCertFindings">血圧 158/96mmHg。自覚症状は軽度の頭痛。</td>
+            </tr>
+            <tr>
+              <th>療養期間</th>
+              <td>自 <span id="pvCertPeriodFrom">2026年10月5日</span> 至 <span id="pvCertPeriodTo">2026年10月19日</span></td>
+            </tr>
+            <tr>
+              <th>転帰</th>
+              <td id="pvCertOutcome">軽快</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="cert-statement">上記のとおり診断いたします。</p>
+
+        <p class="cert-issue-date">発行日：<span id="pvCertIssueDateFoot">2026年10月11日</span></p>
+
+        <div class="cert-sign">
+          <div class="sign-doctor">
+            <p class="sign-inst" id="pvCertInstFoot">佐藤内科クリニック</p>
+            <p class="sign-line">医師氏名：<span id="pvCertDoctor">佐藤 一郎</span></p>
+            <div class="sign-space"><span class="sign-hint">（署名）</span></div>
+          </div>
+          <div class="sign-seal">
+            <span class="seal-label">医療機関印</span>
+            <span class="seal-hint">（印）</span>
+          </div>
+        </div>
+
+        <p class="paper-footnote">※ 本診断書は「見本」の透かしが入った下書き用テンプレートです。正式な診断書は医師が作成・署名・押印したものをご使用ください。</p>
+      </article>
+    </div>
+
+    <!-- 印刷出力の末尾に出す免責 -->
+    <div class="print-disclaimer" lang="zh-CN">
+      <p class="pd-zh">本工具为就诊凭证的格式参考与下書き模板。正式的領収書・診療明細書由医疗机构开具，正式診断書必须由医师作成・署名・押印。本工具生成的文书不能作为正式凭证提交。</p>
+      <p class="pd-ja" lang="ja">本ツールは診療に関する書類の形式確認・下書き用テンプレートです。正式な診断書は必ず医師が作成・署名・押印したものをご使用ください。</p>
+    </div>
+  </section>
+
+  <!-- ============ 説明文 / FAQ ============ -->
+  <section class="seo no-print" aria-label="ツールについて">
+    <h2>医療証明書類 PDF 生成ツールとは</h2>
+    <p>
+      受診すると、医療機関からは目的の異なるいくつかの書類が渡されます。支払いを証明する<strong>領収書</strong>、医療費の中身を項目ごとに示す<strong>診療明細書</strong>、
+      療養の必要性や期間を示す<strong>診断書</strong>です。このツールは、これら3種類の書類を<strong>1回の入力でまとめて作成</strong>し、
+      A4 の PDF として保存・印刷できるようにするブラウザ完結型のジェネレーターです。医療機関名・患者情報・受診日といった共通の項目は一度入力するだけで、
+      3通すべてに反映されます。
+    </p>
+    <p>
+      領収金額は<strong>大字（漢数字）</strong>で「金 壱阡捌百弐拾漆円 也」のように表示でき、診療明細書では保険点数と金額から総点数・総医療費・保険給付額・自己負担額を自動集計します。
+      負担割合は1割・2割・3割から選べ、切り替えると自己負担額がその場で再計算されます。処方薬の附記や、診断書の所見・療養期間・転帰の記載にも対応しています。
+      入力内容はサーバーへ送信されず、すべてお使いのブラウザの中だけで処理されます。
+    </p>
+
+    <h3>使い方（3ステップ）</h3>
+    <ol class="seo-list">
+      <li><strong>共通項目を入力する</strong> — 医療機関名・所在地・電話番号・医師名と、患者氏名・フリガナ・性別・生年月日、診察日・発行日・診療科・傷病名を入力します。年齢は生年月日と診察日から自動計算されます。</li>
+      <li><strong>3通それぞれの内容を入力する</strong> — 領収書の金額と但書、診療明細書の明細行と負担割合、診断書の所見・療養期間・転帰を入力します。明細行と処方薬の行はボタンで増減できます。</li>
+      <li><strong>印刷 / PDF保存を押す</strong> — プレビューで3通を確認してからボタンを押すと印刷ダイアログが開きます。領収書 → 診療明細書 → 診断書の順に、それぞれ別ページで出力されます。送信先を「PDF に保存」にすればPDFファイルとして保存できます。</li>
+    </ol>
+
+    <h3>診断書について（重要）</h3>
+    <p>
+      <strong>診断書は医師法にもとづき、医師が作成・署名・押印する書類です。</strong>したがって、患者本人や第三者が作成した診断書は正式な書類として扱われず、
+      勤務先への提出や保険請求に用いることはできません。他人の署名や印を偽って診断書を作成・使用した場合は、私文書偽造・同行使などの罪に問われる可能性があります。
+    </p>
+    <p lang="zh-CN">
+      <strong>診断書（诊断书）受日本《医师法》约束，必须由医师本人作成、署名并押印。</strong>伪造、变造诊断书或冒充医师署名、印章，可能构成「私文書偽造」「同行使」等刑事犯罪。
+      本工具输出的诊断书带有斜向「見本（サンプル）」水印，仅用于确认日文诊断书的书写格式与项目，<strong>不能作为正式凭证提交</strong>，也无法替代医院开具的证明。
+      需要用于报销、请假、保险理赔或报税时，请向就诊的医疗机构申请正式文书。
+    </p>
+
+    <h3>よくある質問</h3>
+    <dl class="faq">
+      <dt>診断書は自分で作れますか？</dt>
+      <dd>いいえ。診断書は医師法にもとづき医師が作成・署名・押印する書類で、患者本人や第三者が作成したものは正式な診断書として扱われません。本ツールが出力する診断書は「見本」の透かしが入った下書き用テンプレートであり、提出用の正式な書類として使用することはできません。必要な場合は必ず医療機関にご依頼ください。</dd>
+
+      <dt>このツールの医療費明細は正式なものですか？</dt>
+      <dd>いいえ。本ツールで作成できる診療明細書は、医療機関が発行する正式な明細書の形式を確認したり、内容を整理したりするための下書き用テンプレートです。点数や金額は入力値をもとに単純計算しているだけで、実際の診療報酬請求の内容を保証するものではありません。正式な明細書は医療機関から交付を受けてください。</dd>
+
+      <dt>領収書はこのツールで作ったものでも使えますか？</dt>
+      <dd>支払いの事実を証明する正式な領収書は、医療機関が発行するものです。本ツールの領収書は記載項目や書式を確認するための形式参考・下書き用であり、医療機関が発行した領収書の代わりとして提出することはできません。医療費控除や保険請求には、医療機関から交付された原本をご使用ください。</dd>
+
+      <dt>診察日と発行日はどう使い分けますか？</dt>
+      <dd>診察日は実際に受診した日、発行日は書類を発行する日です。領収書や診療明細書では、受診した日と発行日が異なることが一般的です。本ツールでは診察日と発行日を別々に入力でき、年齢は診察日を基準に自動計算します。</dd>
+
+      <dt>自己負担額はどう計算されますか？</dt>
+      <dd>明細行の金額の合計を総医療費とし、選んだ負担割合を掛けて自己負担額を計算します（1円未満切り捨て）。保険給付額は総医療費から自己負担額を差し引いた額です。任意で自己負担額を手動入力して上書きすることもできます。実際の医療機関の計算方法とは異なる場合があります。</dd>
+
+      <dt>入力したデータはどこかに保存されますか？</dt>
+      <dd>いいえ。入力内容はサーバーへ送信されず、お使いの端末のブラウザ内だけで処理されます。ページを閉じると内容は破棄されます。</dd>
+    </dl>
+
+    <p class="disclaimer">
+      ※ 本ツールは診療に関する書類の形式確認・下書きを目的としたものであり、法令への適合や、医療・税務・保険上の取り扱いを保証するものではありません。記載内容の最終確認はご自身で、または医療機関・専門家にご相談ください。
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="wrap">
+    <p data-i18n="footerText">医療証明書類 作成ツール — 領収書・診療明細書・診断書（見本）をまとめて作る無料ツール</p>
+    <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfHGUfgAlViT3TFiVtJi_EpJ4ioUpd9oGyaJ7rehEV-gBH_PA/viewform?usp=pp_url&amp;entry.1745177199=%E5%8C%BB%E7%99%82%E8%A8%BC%E6%98%8E%E6%9B%B8%E9%A1%9E" target="_blank" rel="noopener">ご意見・フィードバック</a></p>
+  </div>
+</footer>
+
+<template id="detailRowTpl">
+  <div class="detail-row">
+    <input type="text" class="row-name" data-i18n-ph="phItemName" placeholder="例：初診料" aria-label="項目名">
+    <input type="text" class="row-points num" inputmode="numeric" placeholder="0" aria-label="保険点数">
+    <input type="text" class="row-amount num" inputmode="numeric" placeholder="0" aria-label="金額（円）">
+    <button type="button" class="row-del" data-i18n-aria="btnDelete" aria-label="削除">×</button>
+  </div>
+</template>
+
+<template id="rxRowTpl">
+  <div class="rx-row">
+    <input type="text" class="row-drug" data-i18n-ph="phDrug" placeholder="例：アムロジピン錠5mg" aria-label="薬品名">
+    <input type="text" class="row-usage" data-i18n-ph="phUsage" placeholder="例：1日1回 朝食後" aria-label="用法・用量">
+    <input type="text" class="row-days num" inputmode="numeric" placeholder="30" aria-label="日数">
+    <button type="button" class="row-del" data-i18n-aria="btnDelete" aria-label="削除">×</button>
+  </div>
+</template>
+
+<script src="script.js"></script>
+</body>
+</html>
