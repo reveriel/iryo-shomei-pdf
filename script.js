@@ -200,7 +200,7 @@
     // 印影らしさは「几何变形」ではなく「印泥的浓淡不均 + 局部缺失」で出す。
     // 圆框・文字は幾何学的に完全なまま、alpha だけをノイズで変調する（変位なし）。
     parts.push('<filter id="' + uid + '-f" x="-10%" y="-10%" width="120%" height="120%">' +
-      '<feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="4" seed="' + seed + '" result="noise"/>' +
+      '<feTurbulence type="turbulence" baseFrequency="0.3" numOctaves="4" seed="' + seed + '" result="noise"/>' +
       '<feComponentTransfer in="noise" result="mask"><feFuncA type="table" tableValues="0 0.25 0.65 0.95 1 1 1"/></feComponentTransfer>' +
       '<feComposite in="SourceGraphic" in2="mask" operator="in" result="stamped"/>' +
       '<feComponentTransfer in="stamped"><feFuncA type="linear" slope="1.35" intercept="0"/></feComponentTransfer>' +
