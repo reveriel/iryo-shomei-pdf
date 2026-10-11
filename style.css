@@ -729,12 +729,23 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 .sign-line { margin: 0 0 4px; font-size: 13px; }
 
 .sign-space {
+  position: relative;
   margin-top: 10px;
   height: 46px;
   border-bottom: 1px solid var(--paper-ink);
 }
 
 .sign-hint { font-size: 10.5px; color: #9aa3b2; }
+
+/* 医師署名の横に重ねる小さな認印 */
+.sign-seal-inline {
+  position: absolute;
+  right: 2px;
+  top: -8px;
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+}
 
 .sign-seal {
   flex: none;
@@ -751,6 +762,23 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 
 .seal-label { font-size: 10.5px; font-weight: 600; }
 .seal-hint { font-size: 10px; }
+
+/* 診療明細書の医院印（右下） */
+.stmt-seal-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 6px;
+}
+
+/* --- 印章（SVG） --- */
+.seal-svg { width: 100%; height: 100%; display: block; }
+
+/* 押印済みのときは点線の枠を消し、印そのものを見せる */
+.seal-box.is-stamped,
+.sign-seal.is-stamped { border-color: transparent; }
+
+/* 所見が未入力のときに確保する記入用の空白欄 */
+.cert-table td.blank-area { height: 6.5em; }
 
 /* 領収書の締め */
 .doc-foot {
@@ -944,6 +972,21 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
     border-color: rgba(180, 35, 24, .16) !important;
     font-size: 104px;
     padding: 12px 28px 16px;
+  }
+
+  /* 印章の朱色を印刷/PDFでも保持する */
+  .seal-svg,
+  .seal-svg * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .seal-box,
+  .sign-seal,
+  .sign-seal-inline,
+  .stmt-seal-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .amount-band,

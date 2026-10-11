@@ -127,6 +127,107 @@
     return '<span class="ph">' + escapeHtml(text) + '</span>';
   }
 
+  // 今日から days 日ずらした日付（ISO）。サンプルの診察日・療養期間などに使う。
+  function shiftISO(days) {
+    var d = new Date();
+    d.setDate(d.getDate() + days);
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + mm + '-' + dd;
+  }
+
+  function escapeAttr(str) {
+    return escapeHtml(str).replace(/"/g, '&quot;');
+  }
+
+  /* ---------------------------------------------------------
+     SVG 円形印章ジェネレーター
+     医療機関名を円弧に沿って配置し、中心に医師名（または「医療機関之印」）を
+     縦組みで置いた朱色の丸印を生成する。三通の押印欄に描画する。
+     --------------------------------------------------------- */
+
+  var SEAL_COLOR = '#c0392b';
+  var sealSeq = 0;
+
+  // 円弧に沿わせる文字のサイズ（文字数が多いほど小さく）
+  function arcFontSize(len) {
+    if (len <= 5) return 9.5;
+    if (len <= 8) return 8.4;
+    if (len <= 11) return 7.4;
+    if (len <= 14) return 6.5;
+    return 5.8;
+  }
+
+  // 中心（縦組み）の文字サイズ。収まる範囲に丸める。
+  function centerFontSize(count) {
+    var base;
+    if (count <= 2) base = 14;
+    else if (count === 3) base = 12;
+    else if (count === 4) base = 10.5;
+    else if (count === 5) base = 9;
+    else base = 7.6;
+    var maxH = 46; // 中心に使える高さ
+    return Math.min(base, maxH / Math.max(count, 1) / 1.02);
+  }
+
+  // 五芒星のパス（中心 50, y、半径 r）
+  function starPath(cx, cy, r) {
+    var pts = [];
+    for (var i = 0; i < 10; i += 1) {
+      var rad = (i % 2 === 0) ? r : r * 0.42;
+      var ang = -Math.PI / 2 + i * Math.PI / 5;
+      pts.push((cx + rad * Math.cos(ang)).toFixed(2) + ',' + (cy + rad * Math.sin(ang)).toFixed(2));
+    }
+    return 'M' + pts.join('L') + 'Z';
+  }
+
+  function buildSealSVG(instName, doctorName) {
+    var uid = 'sealArc' + (++sealSeq);
+    var name = String(instName || '').trim();
+    var doctor = String(doctorName || '').trim();
+    var center = doctor || '医療機関之印';
+
+    var parts = [];
+    parts.push('<svg class="seal-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" ' +
+      'xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="印" focusable="false">');
+
+    // 円弧テキスト用のパス（上部の半円・左→上→右）
+    parts.push('<defs><path id="' + uid + '" d="M16 50 A34 34 0 0 1 50 16 A34 34 0 0 1 84 50"/></defs>');
+
+    // 外枠（二重丸）
+    parts.push('<circle cx="50" cy="50" r="46" fill="none" stroke="' + SEAL_COLOR + '" stroke-width="2.8"/>');
+    parts.push('<circle cx="50" cy="50" r="40.5" fill="none" stroke="' + SEAL_COLOR + '" stroke-width="1.1"/>');
+
+    // 医療機関名を円弧に沿って配置
+    if (name) {
+      var fs = arcFontSize(name.length);
+      var textLen = Math.min(name.length * fs * 1.14, 100).toFixed(2);
+      parts.push('<text font-size="' + fs + '" font-weight="700" fill="' + SEAL_COLOR +
+        '" font-family="\'Noto Sans JP\', sans-serif">' +
+        '<textPath href="#' + uid + '" xlink:href="#' + uid + '" startOffset="50%" ' +
+        'text-anchor="middle" textLength="' + textLen + '" lengthAdjust="spacingAndGlyphs">' +
+        escapeHtml(name) + '</textPath></text>');
+    }
+
+    // 中心：医師名（縦組み）または「医療機関之印」
+    var chars = center.split('');
+    var cfs = centerFontSize(chars.length);
+    var step = cfs * 1.02;
+    var startY = 50 - (chars.length * step) / 2 + cfs * 0.74;
+    chars.forEach(function (ch, i) {
+      if (ch === ' ') return;
+      parts.push('<text x="50" y="' + (startY + i * step).toFixed(2) + '" text-anchor="middle" ' +
+        'font-size="' + cfs.toFixed(2) + '" font-weight="700" fill="' + SEAL_COLOR +
+        '" font-family="\'Noto Sans JP\', sans-serif">' + escapeHtml(ch) + '</text>');
+    });
+
+    // 下部の五芒星（装飾）
+    parts.push('<path d="' + starPath(50, 81, 4.6) + '" fill="' + SEAL_COLOR + '"/>');
+
+    parts.push('</svg>');
+    return parts.join('');
+  }
+
   // 要素に値を入れる。空なら薄いプレースホルダを表示（印刷時は消える）
   function setVal(el, text, phText) {
     if (!el) return;
@@ -147,7 +248,14 @@
     tagline:      { zh: '免费・无需注册・浏览器内完成', ja: '無料・登録不要・ブラウザだけで完結' },
     btnPrint:     { zh: '打印 / 保存 PDF', ja: '印刷 / PDF保存' },
     btnReset:     { zh: '清空重填', ja: 'リセット' },
+    btnSample:    { zh: '一键填入示例', ja: '記入例を入れる' },
     btnLang:      { zh: '日本語', ja: '中文' },
+
+    legendSeal:   { zh: '印章（判子・医療機関印）', ja: '印章（判子・医療機関印）' },
+    badgeSeal:    { zh: '見本', ja: '見本' },
+    chkSeal:      { zh: '加盖印章（按医疗机构名・医师名生成朱色圆章）', ja: '印章を付ける（医療機関名・医師名から朱色の丸印を生成）' },
+    helpSeal:     { zh: '开启后，三张凭证的盖章位会显示根据医疗机构名与医师名生成的朱色圆章（下書き用の見本）。关闭后仍保留空白盖章位，便于手工盖章。',
+                    ja: 'オンにすると、3通の押印欄に医療機関名・医師名から生成した朱色の丸印（下書き用の見本）を表示します。オフにすると白紙の押印欄のまま残るので、手で押印できます。' },
 
     formTitle:    { zh: '输入一次就诊信息，生成一套凭证', ja: '1回の入力で、3通の書類を作成' },
     formHint:     { zh: '左侧填写，右侧实时预览三张日文凭证。最后点「打印 / 保存 PDF」合并输出为一份 A4 PDF。',
@@ -208,8 +316,8 @@
     lblPeriodFrom: { zh: '疗养期间（自）', ja: '療養期間（自）' },
     lblPeriodTo:  { zh: '疗养期间（至）', ja: '療養期間（至）' },
     lblOutcome:   { zh: '転帰（转归）', ja: '転帰' },
-    noteDoctorSeal: { zh: '正式な診断書は、医師の署名と医療機関の印が必要です。本ツールは署名欄・印欄を空欄で出力します。',
-                      ja: '正式な診断書は、医師の署名と医療機関の印が必要です。本ツールは署名欄・印欄を空欄で出力します。' },
+    noteDoctorSeal: { zh: '正式な診断書は、医師の署名と医療機関の印が必要です。本ツールが押印欄に表示する印は下書き用の「見本」で、正式な印ではありません。',
+                      ja: '正式な診断書は、医師の署名と医療機関の印が必要です。本ツールが押印欄に表示する印は下書き用の「見本」で、正式な印ではありません。' },
     privacy:      { zh: '输入内容不会发送到服务器，全部只在你的浏览器内处理。关闭页面后内容即被丢弃。',
                     ja: '入力した内容はサーバーに送信されません。すべてお使いのブラウザ内だけで処理されます。' },
 
@@ -432,10 +540,20 @@
     var amount = $('linkReceipt').checked ? summary.selfPay : toAmount($('receiptAmount').value);
     $('pvReceiptAmount').textContent = '金 ' + kanjiNumber(amount) + '円 也';
 
-    setVal($('pvProviso'), $('proviso').value.trim(), '但書を入力');
-    setVal($('pvReceiptDept'), $('department').value.trim(), '—');
-    setVal($('pvReceiptVisitDate'), formatDate($('visitDate').value), '—');
-    setVal($('pvReceiptDisease'), $('diseaseName').value.trim(), '—');
+    // 但書が空なら行ごと省略する
+    var proviso = $('proviso').value.trim();
+    setVal($('pvProviso'), proviso, '但書を入力');
+    $('pvProvisoLine').hidden = !proviso;
+
+    var dept = $('department').value.trim();
+    var visit = $('visitDate').value;
+    var disease = $('diseaseName').value.trim();
+
+    setVal($('pvReceiptDept'), dept, '—');
+    setVal($('pvReceiptVisitDate'), formatDate(visit), '—');
+    $('pvReceiptMetaRow').hidden = !dept && !visit;
+    setVal($('pvReceiptDisease'), disease, '—');
+    $('pvReceiptDiseaseRow').hidden = !disease;
 
     setVal($('pvReceiptInst'), instName, '医療機関名を入力');
     $('pvReceiptAddress').textContent = instAddress;
@@ -471,6 +589,7 @@
     setVal($('pvStmtVisitDate'), formatDate($('visitDate').value), '—');
     setVal($('pvStmtDept'), $('department').value.trim(), '—');
     setVal($('pvStmtDisease'), $('diseaseName').value.trim(), '—');
+    $('pvStmtDiseaseRow').hidden = !$('diseaseName').value.trim();
 
     /* --- 明細行 --- */
     var tbody = $('pvDetailRows');
@@ -549,13 +668,58 @@
     setVal($('pvCertVisitDate'), formatDate($('visitDate').value), '—');
 
     setVal($('pvCertDisease'), $('diseaseName').value.trim(), '傷病名を入力');
-    setVal($('pvCertFindings'), $('findings').value.trim(), '診断内容・所見を入力');
-    setVal($('pvCertPeriodFrom'), formatDate($('periodFrom').value), '—');
-    setVal($('pvCertPeriodTo'), formatDate($('periodTo').value), '—');
+
+    // 所見が未入力ならエラーにせず、記入用の空白欄を確保する
+    var findings = $('findings').value.trim();
+    var findingsCell = $('pvCertFindings');
+    if (findings) {
+      findingsCell.textContent = findings;
+      findingsCell.classList.remove('blank-area');
+    } else {
+      findingsCell.textContent = '';
+      findingsCell.classList.add('blank-area');
+    }
+
+    var pf = $('periodFrom').value;
+    var pt = $('periodTo').value;
+    setVal($('pvCertPeriodFrom'), formatDate(pf), '—');
+    setVal($('pvCertPeriodTo'), formatDate(pt), '—');
+    $('pvCertPeriodRow').hidden = !pf && !pt;
     setVal($('pvCertOutcome'), $('outcome').value, '—');
 
     setVal($('pvCertInstFoot'), instName, '医療機関名を入力');
     setVal($('pvCertDoctor'), doctor, '医師名を入力');
+  }
+
+  /* ---------------------------------------------------------
+     押印欄（印章の描画・プレースホルダ復帰）
+     --------------------------------------------------------- */
+
+  var sealHolders = null;
+
+  function initSealHolders() {
+    sealHolders = ['sealReceipt', 'sealStatement', 'sealCertInst', 'sealCertDoctor']
+      .map(function (id) { return $(id); })
+      .filter(Boolean);
+    sealHolders.forEach(function (el) {
+      el.setAttribute('data-ph-html', el.innerHTML);
+    });
+  }
+
+  function renderSeals() {
+    if (!sealHolders) return;
+    var enabled = $('sealToggle').checked;
+    var inst = $('instName').value.trim();
+    var doctor = $('doctorName').value.trim();
+    sealHolders.forEach(function (el) {
+      if (enabled) {
+        el.innerHTML = buildSealSVG(inst, doctor);
+        el.classList.add('is-stamped');
+      } else {
+        el.innerHTML = el.getAttribute('data-ph-html') || '';
+        el.classList.remove('is-stamped');
+      }
+    });
   }
 
   /* ---------------------------------------------------------
@@ -581,11 +745,13 @@
      --------------------------------------------------------- */
 
   function refresh() {
+    syncAutoNumber();
     var summary = getSummary();
     syncReceiptLink(summary);
     renderReceipt(summary);
     renderStatement(summary);
     renderCertificate();
+    renderSeals();
     updateAge();
   }
 
@@ -598,7 +764,56 @@
     eachRow('#rxRows', '.rx-row', function (row) { row.remove(); });
   }
 
-  function applyFieldDefaults() {
+  var receiptNoTouched = false;
+
+  // 発行日から領収番号を自動採番（例：RY-20261011-01）
+  function autoNumber() {
+    var iso = $('issueDate').value || todayISO();
+    return 'RY-' + String(iso).replace(/-/g, '') + '-01';
+  }
+
+  function syncAutoNumber() {
+    if (receiptNoTouched) return;
+    var next = autoNumber();
+    if ($('receiptNo').value !== next) $('receiptNo').value = next;
+  }
+
+  function clearFieldValues() {
+    ['instName', 'instAddress', 'instTel', 'doctorName', 'patientName', 'patientKana',
+      'birthDate', 'department', 'diseaseName', 'receiptAmount', 'selfPayOverride',
+      'findings', 'periodFrom', 'periodTo', 'proviso', 'receiptNo'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.value = '';
+    });
+  }
+
+  // 初回・リセット時：日付は今日、番号は自動採番、但書・負担割合は既定値
+  function applySmartDefaults() {
+    clearFieldValues();
+
+    $('sex').value = '男性';
+    $('burdenRate').value = '30';
+    $('outcome').value = '軽快';
+
+    var today = todayISO();
+    $('visitDate').value = today;
+    $('issueDate').value = today;
+
+    $('proviso').value = '診療費として';
+    $('linkReceipt').checked = true;
+    $('sealToggle').checked = true;
+
+    receiptNoTouched = false;
+    $('receiptNo').value = autoNumber();
+
+    clearRows();
+    addDetailRow(null);
+  }
+
+  // 「記入例を入れる」：サンプルデータ一式を流し込む
+  function applySampleData() {
+    clearFieldValues();
+
     $('instName').value = DEFAULTS.instName;
     $('instAddress').value = DEFAULTS.instAddress;
     $('instTel').value = DEFAULTS.instTel;
@@ -607,23 +822,25 @@
     $('patientKana').value = DEFAULTS.patientKana;
     $('sex').value = DEFAULTS.sex;
     $('birthDate').value = DEFAULTS.birthDate;
-    $('visitDate').value = DEFAULTS.visitDate;
-    $('issueDate').value = todayISO();
     $('department').value = DEFAULTS.department;
     $('diseaseName').value = DEFAULTS.diseaseName;
 
-    $('linkReceipt').checked = DEFAULTS.linkReceipt;
-    $('receiptAmount').value = comma(DEFAULTS.receiptAmount);
+    $('linkReceipt').checked = true;
     $('proviso').value = DEFAULTS.proviso;
-    $('receiptNo').value = DEFAULTS.receiptNo;
-
     $('burdenRate').value = DEFAULTS.burdenRate;
-    $('selfPayOverride').value = DEFAULTS.selfPayOverride;
+    $('selfPayOverride').value = '';
 
     $('findings').value = DEFAULTS.findings;
-    $('periodFrom').value = DEFAULTS.periodFrom;
-    $('periodTo').value = DEFAULTS.periodTo;
     $('outcome').value = DEFAULTS.outcome;
+
+    $('issueDate').value = todayISO();
+    $('visitDate').value = shiftISO(-6);
+    $('periodFrom').value = shiftISO(-6);
+    $('periodTo').value = shiftISO(8);
+
+    $('sealToggle').checked = true;
+    receiptNoTouched = false;
+    $('receiptNo').value = autoNumber();
 
     clearRows();
     DEFAULTS.detailRows.forEach(addDetailRow);
@@ -631,7 +848,13 @@
   }
 
   function resetForm() {
-    applyFieldDefaults();
+    applySmartDefaults();
+    applyI18n(lang);
+    refresh();
+  }
+
+  function sampleForm() {
+    applySampleData();
     applyI18n(lang);
     refresh();
   }
@@ -650,7 +873,8 @@
      --------------------------------------------------------- */
 
   function init() {
-    applyFieldDefaults();
+    initSealHolders();
+    applySmartDefaults();
     applyI18n(lang);
 
     var form = $('iryoForm');
@@ -704,13 +928,18 @@
       }
     });
 
-    form.addEventListener('input', refresh);
+    form.addEventListener('input', function (event) {
+      // 領収番号を手で編集したら、以降は自動採番で上書きしない
+      if (event.target && event.target.id === 'receiptNo') receiptNoTouched = true;
+      refresh();
+    });
     form.addEventListener('change', refresh);
 
     $('printBtn').addEventListener('click', function () {
       window.print();
     });
     $('resetBtn').addEventListener('click', resetForm);
+    $('sampleBtn').addEventListener('click', sampleForm);
 
     $('langBtn').addEventListener('click', function () {
       applyI18n(lang === 'zh' ? 'ja' : 'zh');
@@ -732,6 +961,10 @@
     getSummary: getSummary,
     getPatient: getPatient,
     refresh: refresh,
+    buildSealSVG: buildSealSVG,
+    resetForm: resetForm,
+    sampleForm: sampleForm,
+    autoNumber: autoNumber,
     getLang: function () { return lang; },
     setLang: function (l) { applyI18n(l); }
   };

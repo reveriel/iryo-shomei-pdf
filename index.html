@@ -117,6 +117,7 @@
         </svg>
         <span data-i18n="btnPrint">打印 / 保存 PDF</span>
       </button>
+      <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="btnSample">一键填入示例</button>
       <button type="button" class="btn btn-ghost" id="resetBtn" data-i18n="btnReset">清空重填</button>
     </div>
   </div>
@@ -224,6 +225,19 @@
         </div>
       </fieldset>
 
+      <!-- ---------- 印章（判子） ---------- -->
+      <fieldset class="card">
+        <legend><span data-i18n="legendSeal">印章（判子・医療機関印）</span><span class="req-badge" data-i18n="badgeSeal">見本</span></legend>
+
+        <div class="field">
+          <label class="check-line" for="sealToggle">
+            <input type="checkbox" id="sealToggle" name="sealToggle" checked>
+            <span data-i18n="chkSeal">加盖印章（按医疗机构名・医师名生成朱色圆章）</span>
+          </label>
+          <p class="help" data-i18n="helpSeal">开启后，三张凭证的盖章位会显示根据医疗机构名与医师名生成的朱色圆章（下書き用の見本）。关闭后仍保留空白盖章位，便于手工盖章。</p>
+        </div>
+      </fieldset>
+
       <!-- ---------- ① 領収書 ---------- -->
       <fieldset class="card">
         <legend><span data-i18n="legendReceipt">① 領収書（收据）</span><span class="req-badge">領収書</span></legend>
@@ -271,6 +285,21 @@
             <span aria-hidden="true">＋</span> <span data-i18n="btnAddRow">添加明细行</span>
           </button>
           <p class="help" data-i18n="helpRows">点数を入力すると、金額（円）が空のときは 1点＝10円 で自動入力します。金額は自由に変更できます。</p>
+
+          <datalist id="itemNameList">
+            <option value="初診料"></option>
+            <option value="再診料"></option>
+            <option value="検査料"></option>
+            <option value="処置料"></option>
+            <option value="投薬料"></option>
+            <option value="入院料"></option>
+            <option value="医学管理料"></option>
+            <option value="画像診断料"></option>
+            <option value="処方箋料"></option>
+            <option value="リハビリテーション料"></option>
+            <option value="手術料"></option>
+            <option value="病理診断料"></option>
+          </datalist>
         </div>
 
         <div class="field-row">
@@ -380,18 +409,18 @@
           <span class="amount-value daiji" id="pvReceiptAmount">金 壱阡捌百弐拾漆円 也</span>
         </div>
 
-        <p class="proviso">但し、<span id="pvProviso">診療費として</span></p>
+        <p class="proviso" id="pvProvisoLine">但し、<span id="pvProviso">診療費として</span></p>
         <p class="receipt-line">上記正に領収いたしました。</p>
 
         <table class="info-table">
           <tbody>
-            <tr><th>診療科</th><td id="pvReceiptDept">内科</td><th>診察日</th><td id="pvReceiptVisitDate">2026年10月5日</td></tr>
-            <tr><th>傷病名</th><td id="pvReceiptDisease" colspan="3">高血圧症</td></tr>
+            <tr id="pvReceiptMetaRow"><th>診療科</th><td id="pvReceiptDept">内科</td><th>診察日</th><td id="pvReceiptVisitDate">2026年10月5日</td></tr>
+            <tr id="pvReceiptDiseaseRow"><th>傷病名</th><td id="pvReceiptDisease" colspan="3">高血圧症</td></tr>
           </tbody>
         </table>
 
         <div class="doc-foot">
-          <div class="seal-box">
+          <div class="seal-box" id="sealReceipt">
             <span class="seal-label">領収印</span>
           </div>
           <div class="issuer-block">
@@ -434,7 +463,7 @@
               <th>診察日</th><td id="pvStmtVisitDate">2026年10月5日</td>
               <th>診療科</th><td id="pvStmtDept">内科</td>
             </tr>
-            <tr>
+            <tr id="pvStmtDiseaseRow">
               <th>傷病名</th><td id="pvStmtDisease" colspan="3">高血圧症</td>
             </tr>
           </tbody>
@@ -470,6 +499,12 @@
         <div class="total-band">
           <span class="total-label">自己負担額（お支払い額）</span>
           <span class="total-value num" id="pvStmtSelfPay">¥1,827</span>
+        </div>
+
+        <div class="stmt-seal-row">
+          <div class="seal-box" id="sealStatement">
+            <span class="seal-label">医院印</span>
+          </div>
         </div>
 
         <p class="paper-footnote">※ 本明細書は形式確認・下書き用のテンプレートです。点数・金額は入力値をもとに単純計算したもので、正式な診療報酬明細ではありません。</p>
@@ -510,7 +545,7 @@
 
         <table class="cert-table">
           <tbody>
-            <tr>
+            <tr id="pvCertDiseaseRow">
               <th>傷病名</th>
               <td id="pvCertDisease">高血圧症</td>
             </tr>
@@ -518,7 +553,7 @@
               <th>診断内容・所見</th>
               <td class="pre-line" id="pvCertFindings">血圧 158/96mmHg。自覚症状は軽度の頭痛。</td>
             </tr>
-            <tr>
+            <tr id="pvCertPeriodRow">
               <th>療養期間</th>
               <td>自 <span id="pvCertPeriodFrom">2026年10月5日</span> 至 <span id="pvCertPeriodTo">2026年10月19日</span></td>
             </tr>
@@ -537,9 +572,12 @@
           <div class="sign-doctor">
             <p class="sign-inst" id="pvCertInstFoot">佐藤内科クリニック</p>
             <p class="sign-line">医師氏名：<span id="pvCertDoctor">佐藤 一郎</span></p>
-            <div class="sign-space"><span class="sign-hint">（署名）</span></div>
+            <div class="sign-space">
+              <span class="sign-hint">（署名）</span>
+              <span class="sign-seal-inline" id="sealCertDoctor"></span>
+            </div>
           </div>
-          <div class="sign-seal">
+          <div class="sign-seal" id="sealCertInst">
             <span class="seal-label">医療機関印</span>
             <span class="seal-hint">（印）</span>
           </div>
@@ -625,7 +663,7 @@
 
 <template id="detailRowTpl">
   <div class="detail-row">
-    <input type="text" class="row-name" data-i18n-ph="phItemName" placeholder="例：初診料" aria-label="項目名">
+    <input type="text" class="row-name" list="itemNameList" data-i18n-ph="phItemName" placeholder="例：初診料" aria-label="項目名">
     <input type="text" class="row-points num" inputmode="numeric" placeholder="0" aria-label="保険点数">
     <input type="text" class="row-amount num" inputmode="numeric" placeholder="0" aria-label="金額（円）">
     <button type="button" class="row-del" data-i18n-aria="btnDelete" aria-label="削除">×</button>
