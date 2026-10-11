@@ -1046,3 +1046,42 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 
   .print-disclaimer { break-before: auto; }
 }
+
+/* =========================================================
+   シェア（バイラル導線） — 印刷時は .no-print で非表示
+   ========================================================= */
+.share-block {
+  grid-column: 1 / -1;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+}
+.share-block-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text);
+}
+.share-block-title svg { width: 16px; height: 16px; color: var(--c-accent); flex-shrink: 0; }
+.share-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.share-btn { flex: 1 1 150px; min-width: 0; }
+.share-btn .share-logo { width: 18px; height: 18px; flex-shrink: 0; }
+.share-x { background: #0f1419; color: #fff; border-color: #0f1419; }
+.share-x:hover { background: #2a3036; border-color: #2a3036; }
+.share-line { background: #06c755; color: #fff; border-color: #06c755; }
+.share-line:hover { background: #05b34c; border-color: #05b34c; }
+.share-copy, .share-img { background: transparent; color: var(--c-text-muted); border-color: var(--c-border); }
+.share-copy:hover, .share-img:hover { background: var(--c-surface-2); color: var(--c-text); }
+.share-btn[disabled] { opacity: .6; cursor: default; }
+.share-url { margin: 12px 0 0; font-size: 12px; color: var(--c-text-faint); word-break: break-all; }
+@media (max-width: 560px) {
+  .share-block { padding: 18px 16px; }
+  .share-row { gap: 8px; }
+  .share-btn { flex: 1 1 calc(50% - 4px); font-size: 13px; padding: 10px 10px; }
+  .share-btn span { white-space: normal; }
+}

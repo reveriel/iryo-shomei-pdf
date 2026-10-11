@@ -146,8 +146,18 @@
      縦組みで置いた朱色の丸印を生成する。三通の押印欄に描画する。
      --------------------------------------------------------- */
 
-  var SEAL_COLOR = '#c0392b';
+  var SEAL_COLOR = '#b3382c'; // 朱肉の朱色（cinnabar、やや暖色の橙赤）
   var sealSeq = 0;
+
+  // 印影を「本物らしく」するための決定論的シード（同じ医院名＋医師名なら同じ印影）
+  function sealSeed(instName, doctorName) {
+    var s = String(instName || '') + '\u0000' + String(doctorName || '');
+    var h = 0;
+    for (var i = 0; i < s.length; i++) {
+      h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    }
+    return (h % 997) + 3;
+  }
 
   // 円弧に沿わせる文字のサイズ（文字数が多いほど小さく）
   function arcFontSize(len) {
@@ -170,29 +180,37 @@
     return Math.min(base, maxH / Math.max(count, 1) / 1.02);
   }
 
-  // 五芒星のパス（中心 50, y、半径 r）
-  function starPath(cx, cy, r) {
-    var pts = [];
-    for (var i = 0; i < 10; i += 1) {
-      var rad = (i % 2 === 0) ? r : r * 0.42;
-      var ang = -Math.PI / 2 + i * Math.PI / 5;
-      pts.push((cx + rad * Math.cos(ang)).toFixed(2) + ',' + (cy + rad * Math.sin(ang)).toFixed(2));
-    }
-    return 'M' + pts.join('L') + 'Z';
-  }
-
+  // 印影を「本物らしく」見せる生成。輪郭の毛羽立ち（変位）＋かすれ（濃淡ノイズ）＋
+  // 捺印の微妙な傾きを再現し、明朝体（セリフ）で刻印の風合いを近づける。
   function buildSealSVG(instName, doctorName) {
-    var uid = 'sealArc' + (++sealSeq);
+    var uid = 'seal' + (++sealSeq);
     var name = String(instName || '').trim();
     var doctor = String(doctorName || '').trim();
     var center = doctor || '医療機関之印';
+    var seed = sealSeed(name, doctor);
+    var rot = ((seed % 11) - 5) * 0.4; // 捺印の微妙な傾き（-2°〜2°）
+
+    var SERIF = "'Hiragino Mincho ProN','Yu Mincho','Noto Serif JP','MS Mincho',serif";
 
     var parts = [];
     parts.push('<svg class="seal-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" ' +
       'xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="印" focusable="false">');
 
+    parts.push('<defs>');
+    parts.push('<filter id="' + uid + '-f" x="-20%" y="-20%" width="140%" height="140%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="' + seed + '" result="warp"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="warp" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="rough"/>' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="' + (seed + 11) + '" result="grain"/>' +
+      '<feColorMatrix in="grain" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.5 -0.2" result="grainMask"/>' +
+      '<feComposite in="rough" in2="grainMask" operator="in" result="stamped"/>' +
+      '</filter>');
     // 円弧テキスト用のパス（上部の半円・左→上→右）
-    parts.push('<defs><path id="' + uid + '" d="M16 50 A34 34 0 0 1 50 16 A34 34 0 0 1 84 50"/></defs>');
+    parts.push('<path id="' + uid + '-p" d="M16 50 A34 34 0 0 1 50 16 A34 34 0 0 1 84 50"/>');
+    parts.push('</defs>');
+
+    // 捺印の傾き＋フィルタ適用
+    parts.push('<g transform="rotate(' + rot.toFixed(2) + ' 50 50)">');
+    parts.push('<g filter="url(#' + uid + '-f)">');
 
     // 外枠（二重丸）
     parts.push('<circle cx="50" cy="50" r="46" fill="none" stroke="' + SEAL_COLOR + '" stroke-width="2.8"/>');
@@ -202,9 +220,9 @@
     if (name) {
       var fs = arcFontSize(name.length);
       var textLen = Math.min(name.length * fs * 1.14, 100).toFixed(2);
-      parts.push('<text font-size="' + fs + '" font-weight="700" fill="' + SEAL_COLOR +
-        '" font-family="\'Noto Sans JP\', sans-serif">' +
-        '<textPath href="#' + uid + '" xlink:href="#' + uid + '" startOffset="50%" ' +
+      parts.push('<text font-size="' + fs + '" font-weight="500" fill="' + SEAL_COLOR +
+        '" font-family="' + SERIF + '">' +
+        '<textPath href="#' + uid + '-p" xlink:href="#' + uid + '-p" startOffset="50%" ' +
         'text-anchor="middle" textLength="' + textLen + '" lengthAdjust="spacingAndGlyphs">' +
         escapeHtml(name) + '</textPath></text>');
     }
@@ -217,13 +235,12 @@
     chars.forEach(function (ch, i) {
       if (ch === ' ') return;
       parts.push('<text x="50" y="' + (startY + i * step).toFixed(2) + '" text-anchor="middle" ' +
-        'font-size="' + cfs.toFixed(2) + '" font-weight="700" fill="' + SEAL_COLOR +
-        '" font-family="\'Noto Sans JP\', sans-serif">' + escapeHtml(ch) + '</text>');
+        'font-size="' + cfs.toFixed(2) + '" font-weight="500" fill="' + SEAL_COLOR +
+        '" font-family="' + SERIF + '">' + escapeHtml(ch) + '</text>');
     });
 
-    // 下部の五芒星（装飾）
-    parts.push('<path d="' + starPath(50, 81, 4.6) + '" fill="' + SEAL_COLOR + '"/>');
-
+    parts.push('</g>');
+    parts.push('</g>');
     parts.push('</svg>');
     return parts.join('');
   }
@@ -274,6 +291,10 @@
     badgeSample:  { zh: '带見本水印', ja: '見本の透かし入り' },
 
     lblInstName:  { zh: '医疗机构名称', ja: '医療機関名' },
+    helpInstTemplate: { zh: '可选：从下方「常见医院」选择后自动填入名称，地址・电话・医生请按实际就诊医院填写。',
+                        ja: '任意：下の「よくある病院」から選ぶと名称が自動入力されます。住所・電話・医師名は実際に受診した病院をご記入ください。' },
+    lblInstTemplate: { zh: '常见医院（模板・可选）', ja: 'よくある病院（テンプレート・任意）' },
+    optChooseHospital: { zh: '—— 请选择（或手动填写上方名称）——', ja: '—— 選択してください（上の名称を手入力してもOK）——' },
     lblInstAddress: { zh: '所在地（地址）', ja: '所在地' },
     lblInstTel:   { zh: '电话号码', ja: '電話番号' },
     lblDoctor:    { zh: '医师姓名', ja: '医師名' },
@@ -286,6 +307,8 @@
     lblIssueDate: { zh: '发行日期', ja: '発行日' },
     lblDept:      { zh: '诊疗科', ja: '診療科' },
     lblDisease:   { zh: '傷病名（病名）', ja: '傷病名' },
+    lblDiseaseTemplate: { zh: '常见疾病（模板・可选）', ja: 'よくある傷病名（テンプレート・任意）' },
+    optChooseDisease: { zh: '—— 请选择（自动填入病名・诊疗科・所见・转归・疗养期）——', ja: '—— 選択してください（病名・診療科・所見・転帰・療養期間を自動入力）——' },
 
     chkLink:      { zh: '领收金额与明细的自付额联动', ja: '領収金額を明細の自己負担額と連動する' },
     lblReceiptAmount: { zh: '領収金額（自己负担额）', ja: '領収金額（自己負担額）' },
@@ -333,6 +356,11 @@
     phUsage:      { zh: '例：1日1回 朝食後', ja: '例：1日1回 朝食後' },
 
     previewBar:   { zh: '预览（A4・三张凭证）', ja: 'プレビュー（A4・3通）' },
+    shareTitle:   { zh: '分享这个工具', ja: 'このツールをシェアする' },
+    shareX:       { zh: '分享到 X', ja: 'X で共有' },
+    shareLine:    { zh: '分享到 LINE', ja: 'LINE で共有' },
+    shareCopy:    { zh: '复制链接', ja: 'リンクをコピー' },
+    shareSave:    { zh: '保存图片', ja: '画像を保存' },
     footerText:   { zh: '医療証明書類 作成ツール — 領収書・診療明細書・診断書（見本）をまとめて作る無料ツール',
                     ja: '医療証明書類 作成ツール — 領収書・診療明細書・診断書（見本）をまとめて作る無料ツール' }
   };
@@ -404,6 +432,25 @@
     periodFrom: '2026-10-05',
     periodTo: '2026-10-19',
     outcome: '軽快'
+  };
+
+  /* ---------------------------------------------------------
+     よくある傷病名テンプレート
+     観光客・在日外国人が受診しやすい疾患を、病名 → 診療科・所見・転帰・
+     療養期間（days）の初期値として用意する。正式な診断は医師による。
+     --------------------------------------------------------- */
+
+  var DISEASE_TEMPLATES = {
+    '急性上気道炎':  { department: '内科',       findings: '発熱、咽頭痛、鼻汁・鼻閉を認める。', outcome: '治癒', days: 3 },
+    'インフルエンザ': { department: '内科',       findings: '38.5℃の発熱、関節痛、咳嗽を認める。', outcome: '治癒', days: 5 },
+    '急性胃腸炎':    { department: '内科',       findings: '腹痛、下痢、嘔気を認める。脱水予防のため経口補水を指示した。', outcome: '治癒', days: 2 },
+    '蕁麻疹':        { department: '皮膚科',     findings: '瘙痒を伴う膨疹が体幹・四肢に多発。', outcome: '治癒', days: 3 },
+    '足関節捻挫':    { department: '整形外科',   findings: '右足関節の疼痛・腫脹を認める。単純X線検査で骨折は認めず。', outcome: '治癒', days: 7 },
+    '急性中耳炎':    { department: '耳鼻咽喉科', findings: '耳痛、発熱、鼓膜の充血を認める。', outcome: '治癒', days: 3 },
+    '急性咽頭炎':    { department: '耳鼻咽喉科', findings: '咽頭痛、嚥下時痛、咽頭発赤を認める。', outcome: '治癒', days: 3 },
+    '急性歯髄炎':    { department: '歯科',       findings: '右下第一大臼歯の自発痛、冷水刺激痛を認める。', outcome: '治癒', days: 2 },
+    '急性膀胱炎':    { department: '泌尿器科',   findings: '排尿時痛、頻尿、尿混濁を認める。', outcome: '治癒', days: 3 },
+    '熱中症':        { department: '内科',       findings: 'めまい、倦怠感、発汗を認める。安静と水分・塩分補給を指示した。', outcome: '治癒', days: 2 }
   };
 
   /* ---------------------------------------------------------
@@ -945,6 +992,35 @@
       applyI18n(lang === 'zh' ? 'ja' : 'zh');
     });
 
+    // よくある病院テンプレート → 医療機関名のみ自動入力（住所・電話・医師名は手入力）
+    $('instTemplate').addEventListener('change', function () {
+      var v = this.value;
+      if (!v) return;
+      $('instName').value = v;
+      this.value = '';
+      refresh();
+    });
+
+    // よくある傷病名テンプレート → 病名・診療科・所見・転帰・療養期間を自動入力
+    $('diseaseTemplate').addEventListener('change', function () {
+      var key = this.value;
+      if (!key) return;
+      var d = DISEASE_TEMPLATES[key];
+      if (d) {
+        $('diseaseName').value = key;
+        if (d.department) $('department').value = d.department;
+        if (d.findings) $('findings').value = d.findings;
+        if (d.outcome) $('outcome').value = d.outcome;
+        var visit = $('visitDate').value;
+        if (d.days) {
+          if (visit) $('periodFrom').value = visit;
+          $('periodTo').value = shiftISO(d.days);
+        }
+      }
+      this.value = '';
+      refresh();
+    });
+
     refresh();
   }
 
@@ -968,6 +1044,228 @@
     getLang: function () { return lang; },
     setLang: function (l) { applyI18n(l); }
   };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+/* =========================================================
+   シェア（バイラル導線） — 既存機能には触れない独立モジュール
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var SHARE_URL  = "https://www.reveriel.com/iryo-shomei-pdf/";
+  var CARD_TITLE = "医療証明書類 作成ツール";
+  var CARD_SUB   = "領収書・診療明細書・診断書をまとめて作成";
+  var CARD_FOOT  = "www.reveriel.com/iryo-shomei-pdf";
+  var FILE_NAME  = "iryo-shomei-pdf.png";
+
+  var L = {
+    text: { zh: '免费制作医疗证明书类（收据・诊疗明细・诊断书）的生成器', ja: '無料で作れる医療証明書類（領収書・診療明細書・診断書）ジェネレーター' },
+    sub:  { zh: '收据・诊疗明细・诊断书，一次生成', ja: '領収書・診療明細書・診断書をまとめて作成' },
+    copied:   { zh: '已复制', ja: 'コピーしました' },
+    copyFail: { zh: '复制失败', ja: 'コピーできませんでした' },
+    saveFail: { zh: '无法生成图片', ja: '画像を生成できませんでした' }
+  };
+  function tr(key) {
+    var l = (window.__iryo && window.__iryo.getLang && window.__iryo.getLang()) || 'ja';
+    return L[key][l] || L[key].ja;
+  }
+
+  function byId(id) { return document.getElementById(id); }
+
+  function shareText() { return tr('text'); }
+  function cardSub()   { return tr('sub'); }
+
+  function openExternal(url) {
+    if (!url) return;
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function buildTweetUrl() {
+    return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()) +
+      '&url=' + encodeURIComponent(SHARE_URL);
+  }
+  function buildLineUrl() {
+    return 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(SHARE_URL);
+  }
+
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:absolute;left:-9999px;top:0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  function copyText(text) {
+    return new Promise(function (resolve) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(
+            function () { resolve(true); },
+            function () { resolve(fallbackCopy(text)); }
+          );
+          return;
+        }
+      } catch (e) { /* fallthrough */ }
+      resolve(fallbackCopy(text));
+    });
+  }
+
+  /* ---- 共有カード（1200 x 630） ---- */
+  var CARD_W = 1200, CARD_H = 630;
+  var FONT = '"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif';
+
+  function roundRect(ctx, x, y, w, h, r) {
+    if (typeof ctx.roundRect === 'function') { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); return; }
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawCard(ctx) {
+    var g = ctx.createLinearGradient(0, 0, CARD_W, CARD_H);
+    g.addColorStop(0, '#1e3a8a');
+    g.addColorStop(1, '#2f5bd0');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, CARD_W, CARD_H);
+
+    ctx.fillStyle = 'rgba(255,255,255,.07)';
+    ctx.beginPath(); ctx.arc(CARD_W - 130, 80, 230, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(CARD_W - 300, CARD_H + 10, 160, 0, Math.PI * 2); ctx.fill();
+
+    var PAD = 80;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+
+    ctx.fillStyle = 'rgba(255,255,255,.72)';
+    ctx.font = '600 24px ' + FONT;
+    ctx.fillText('FREE TOOL — BROWSER ONLY', PAD, 106);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 74px ' + FONT;
+    ctx.fillText(CARD_TITLE, PAD, 260);
+
+    ctx.fillStyle = 'rgba(255,255,255,.92)';
+    ctx.font = '500 34px ' + FONT;
+    ctx.fillText(cardSub(), PAD, 336);
+
+    ctx.fillStyle = 'rgba(255,255,255,.85)';
+    roundRect(ctx, PAD, CARD_H - 138, 64, 6, 3);
+    ctx.fill();
+
+    ctx.fillStyle = '#dbe6ff';
+    ctx.font = '700 30px ' + FONT;
+    ctx.fillText(CARD_FOOT, PAD, CARD_H - 80);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255,255,255,.62)';
+    ctx.font = '500 22px ' + FONT;
+    ctx.fillText('無料・登録不要', CARD_W - PAD, CARD_H - 80);
+    ctx.textAlign = 'left';
+  }
+
+  function renderCardBlob() {
+    return new Promise(function (resolve) {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = CARD_W;
+        canvas.height = CARD_H;
+        var ctx = canvas.getContext('2d');
+        var finish = function () {
+          if (canvas.toBlob) canvas.toBlob(function (b) { resolve(b); }, 'image/png');
+          else resolve(null);
+        };
+        var draw = function () {
+          try { drawCard(ctx); } catch (e) {}
+          finish();
+        };
+        if (document.fonts && document.fonts.ready) {
+          var drawn = false;
+          var once = function () { if (drawn) { return; } drawn = true; draw(); };
+          document.fonts.ready.then(once).catch(once);
+          // fonts.ready が解決しない環境でも保存ボタンが固まらないようタイムアウト競走させる
+          setTimeout(once, 1500);
+        } else {
+          draw();
+        }
+      } catch (e) { resolve(null); }
+    });
+  }
+
+  function flash(el, text) {
+    if (!el) return;
+    var old = el.textContent;
+    el.textContent = text;
+    setTimeout(function () { el.textContent = old; }, 1800);
+  }
+
+  function init() {
+    var xBtn = byId('shareXBtn');
+    var lBtn = byId('shareLineBtn');
+    var cBtn = byId('shareCopyBtn');
+    var sBtn = byId('shareSaveBtn');
+    var urlText = byId('shareUrlText');
+    if (!xBtn || !lBtn || !cBtn) return;
+
+    if (urlText) urlText.textContent = SHARE_URL;
+
+    xBtn.addEventListener('click', function () { openExternal(buildTweetUrl()); });
+    lBtn.addEventListener('click', function () { openExternal(buildLineUrl()); });
+
+    var copyLabel = byId('shareCopyLabel');
+    var resetTimer = null;
+    cBtn.addEventListener('click', function () {
+      var original = copyLabel ? copyLabel.textContent : '';
+      copyText(SHARE_URL).then(function (ok) {
+        if (!copyLabel) return;
+        copyLabel.textContent = ok ? tr('copied') : tr('copyFail');
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(function () { copyLabel.textContent = original; }, 1800);
+      });
+    });
+
+    if (sBtn) {
+      var saveLabel = byId('shareSaveLabel');
+      sBtn.addEventListener('click', function () {
+        if (sBtn.disabled) return;
+        sBtn.disabled = true;
+        renderCardBlob().then(function (blob) {
+          sBtn.disabled = false;
+          if (!blob) { flash(saveLabel, tr('saveFail')); return; }
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = FILE_NAME;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        });
+      });
+    }
+  }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

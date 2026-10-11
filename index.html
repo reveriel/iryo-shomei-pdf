@@ -38,7 +38,7 @@
       "featureList": [
         "領収書・診療明細書・診断書の3通を1フォームからまとめて作成",
         "領収金額の大字（漢数字）表示",
-        "診療明細の点数・金額の自動集計と負担割合（1割・2割・3割）の自動計算",
+        "診療明細の点数・金額の自動集計と負担割合（1割・2割・3割・自費10割）の自動計算",
         "診断書の「見本」透かし表示",
         "A4 PDF 出力・印刷、中文／日本語の画面切り替え",
         "入力内容はブラウザ内のみで処理"
@@ -154,6 +154,25 @@
         <div class="field">
           <label for="instName" data-i18n="lblInstName">医疗机构名称</label>
           <input type="text" id="instName" name="instName" data-i18n-ph="phInst" placeholder="例：佐藤内科クリニック">
+          <p class="help" data-i18n="helpInstTemplate">可选：从下方「常见医院」选择后自动填入名称，地址・电话・医生请按实际就诊医院填写。</p>
+        </div>
+
+        <div class="field">
+          <label for="instTemplate" data-i18n="lblInstTemplate">常见医院（模板・可选）</label>
+          <select id="instTemplate" name="instTemplate">
+            <option value="" selected data-i18n="optChooseHospital">—— 请选择（或手动填写上方名称）——</option>
+            <option value="聖路加国際病院">聖路加国際病院（東京・中央区）</option>
+            <option value="順天堂大学医学部附属順天堂医院">順天堂大学医学部附属順天堂医院（東京・文京区）</option>
+            <option value="東京大学医学部附属病院">東京大学医学部附属病院（東京・文京区）</option>
+            <option value="国際医療福祉大学三田病院">国際医療福祉大学三田病院（東京・港区）</option>
+            <option value="東京ミッドタウンクリニック">東京ミッドタウンクリニック（東京・港区）</option>
+            <option value="東京都済生会中央病院">東京都済生会中央病院（東京・港区）</option>
+            <option value="大阪大学医学部附属病院">大阪大学医学部附属病院（大阪・吹田）</option>
+            <option value="大阪市立総合医療センター">大阪市立総合医療センター（大阪・都島）</option>
+            <option value="京都大学医学部附属病院">京都大学医学部附属病院（京都・左京）</option>
+            <option value="神戸市立医療センター中央市民病院">神戸市立医療センター中央市民病院（兵庫・神戸）</option>
+            <option value="那覇市立病院">那覇市立病院（沖縄・那覇）</option>
+          </select>
         </div>
 
         <div class="field">
@@ -222,6 +241,23 @@
             <label for="diseaseName" data-i18n="lblDisease">傷病名（病名）</label>
             <input type="text" id="diseaseName" name="diseaseName" data-i18n-ph="phDisease" placeholder="例：高血圧症">
           </div>
+        </div>
+
+        <div class="field">
+          <label for="diseaseTemplate" data-i18n="lblDiseaseTemplate">常见疾病（模板・可选）</label>
+          <select id="diseaseTemplate" name="diseaseTemplate">
+            <option value="" selected data-i18n="optChooseDisease">—— 请选择（自动填入病名・诊疗科・所见・转归・疗养期）——</option>
+            <option value="急性上気道炎">急性上気道炎（かぜ）</option>
+            <option value="インフルエンザ">インフルエンザ（流感）</option>
+            <option value="急性胃腸炎">急性胃腸炎</option>
+            <option value="蕁麻疹">蕁麻疹（じんましん）</option>
+            <option value="足関節捻挫">足関節捻挫（扭伤）</option>
+            <option value="急性中耳炎">急性中耳炎</option>
+            <option value="急性咽頭炎">急性咽頭炎</option>
+            <option value="急性歯髄炎">急性歯髄炎（歯痛）</option>
+            <option value="急性膀胱炎">急性膀胱炎</option>
+            <option value="熱中症">熱中症（中暑）</option>
+          </select>
         </div>
       </fieldset>
 
@@ -309,6 +345,7 @@
               <option value="30" selected>3割（一般の在职者）</option>
               <option value="20">2割</option>
               <option value="10">1割（後期高齢者など）</option>
+              <option value="100">10割（自費・自由診療／観光客など）</option>
             </select>
           </div>
           <div class="field">
@@ -594,6 +631,33 @@
     </div>
   </section>
 
+  <!-- ============ シェア（バイラル導線） ============ -->
+  <section class="share-block no-print" id="shareBlock" aria-label="share">
+    <p class="share-block-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5.5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/><path d="M8.3 10.8 15.7 6.7M8.3 13.2l7.4 4.1"/></svg>
+      <span data-i18n="shareTitle">このツールをシェアする</span>
+    </p>
+    <div class="share-row">
+      <button class="btn share-btn share-x" id="shareXBtn" type="button" aria-label="X">
+        <svg class="share-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.53 3h3.24l-7.08 8.09L22 21h-6.52l-5.11-6.68L4.53 21H1.29l7.57-8.66L1.6 3h6.69l4.62 6.1L17.53 3Zm-1.14 16.06h1.8L7.7 4.85H5.77l10.62 14.21Z"/></svg>
+        <span data-i18n="shareX">X で共有</span>
+      </button>
+      <button class="btn share-btn share-line" id="shareLineBtn" type="button" aria-label="LINE">
+        <svg class="share-logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.9 3 2.8 6.4 2.8 10.6c0 3.77 3.35 6.93 7.88 7.53.31.07.73.2.83.47.1.24.06.62.03.87l-.13.83c-.04.24-.19.94.82.51 1.01-.42 5.44-3.2 7.42-5.48 1.37-1.47 2.13-2.96 2.13-4.73C21.78 6.4 17.1 3 12 3Z"/></svg>
+        <span data-i18n="shareLine">LINE で共有</span>
+      </button>
+      <button class="btn share-btn share-copy" id="shareCopyBtn" type="button" aria-label="copy link">
+        <svg class="share-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.7a3.6 3.6 0 0 0 5.1 0l2.9-2.9a3.6 3.6 0 0 0-5.1-5.1l-1.4 1.4"/><path d="M13.8 10.3a3.6 3.6 0 0 0-5.1 0l-2.9 2.9a3.6 3.6 0 0 0 5.1 5.1l1.4-1.4"/></svg>
+        <span id="shareCopyLabel" data-i18n="shareCopy">リンクをコピー</span>
+      </button>
+      <button class="btn share-btn share-img" id="shareSaveBtn" type="button" aria-label="save image">
+        <svg class="share-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11M8 10.5l4 4 4-4"/><path d="M4.5 17.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-1.5"/></svg>
+        <span id="shareSaveLabel" data-i18n="shareSave">画像を保存</span>
+      </button>
+    </div>
+    <p class="share-url" id="shareUrlText"></p>
+  </section>
+
   <!-- ============ 説明文 / FAQ ============ -->
   <section class="seo no-print" aria-label="ツールについて">
     <h2>医療証明書類 PDF 生成ツールとは</h2>
@@ -605,7 +669,7 @@
     </p>
     <p>
       領収金額は<strong>大字（漢数字）</strong>で「金 壱阡捌百弐拾漆円 也」のように表示でき、診療明細書では保険点数と金額から総点数・総医療費・保険給付額・自己負担額を自動集計します。
-      負担割合は1割・2割・3割から選べ、切り替えると自己負担額がその場で再計算されます。処方薬の附記や、診断書の所見・療養期間・転帰の記載にも対応しています。
+      負担割合は1割・2割・3割・自費（10割）から選べ、切り替えると自己負担額がその場で再計算されます。観光客など保険適用外の自費診療（自由診療）にも対応しています。処方薬の附記や、診断書の所見・療養期間・転帰の記載にも対応しています。
       入力内容はサーバーへ送信されず、すべてお使いのブラウザの中だけで処理されます。
     </p>
 
