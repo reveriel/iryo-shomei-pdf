@@ -937,6 +937,7 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 
   /* 印刷しない要素 */
   .no-print,
+  .feedback-fab,
   .site-header,
   .form-pane,
   .seo,
