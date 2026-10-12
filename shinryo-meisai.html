@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>診療明細書の見方・各項目の意味を解説｜保険点数・負担割合・診療行為コード</title>
+<meta name="description" content="診療明細書の各項目（診療年月日・保険点数・総点数・保険給付額・自己負担額）の意味と、点数から金額への換算、負担割合の違い、診療行為コードの読み方、自費10割との違いを解説します。">
+<meta name="keywords" content="診療明細書 見方,保険点数 計算,負担割合,診療行為コード,区分番号,自費10割,訪日外国人 医療費">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1f6f54">
+<link rel="canonical" href="https://www.reveriel.com/iryo-shomei-pdf/shinryo-meisai.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="診療明細書の見方・各項目の意味を解説">
+<meta property="og:description" content="保険点数・負担割合・診療行為コードの読み方と、自費10割との違いをやさしく解説します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://www.reveriel.com/iryo-shomei-pdf/shinryo-meisai.html">
+<meta property="og:image" content="https://www.reveriel.com/iryo-shomei-pdf/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.reveriel.com/iryo-shomei-pdf/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f54'/%3E%3Cpath d='M16 5v22M5 16h22' stroke='%23ffffff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="guide.css">
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "6fc01bf3ac5e457ba1bd16b91e5b653e"}'></script><!-- End Cloudflare Web Analytics -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "診療明細書の見方・各項目の意味を解説",
+      "description": "診療明細書の各項目（診療年月日・保険点数・総点数・保険給付額・自己負担額）の意味と、点数から金額への換算、負担割合の違い、診療行為コードの読み方、自費10割との違いを解説します。",
+      "inLanguage": "ja",
+      "datePublished": "2026-10-12",
+      "dateModified": "2026-10-12",
+      "author": { "@type": "Organization", "name": "Reveriel" },
+      "publisher": { "@type": "Organization", "name": "Reveriel" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.reveriel.com/iryo-shomei-pdf/shinryo-meisai.html" },
+      "image": "https://www.reveriel.com/iryo-shomei-pdf/og-image.png"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "保険点数はどうやって金額に換算しますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "保険点数は、原則として1点＝10円で換算します。たとえば目安として290点の項目なら2,900円です。1回の受診の各項目の点数を合計したものが総点数で、これを10倍した金額が総医療費（10割）にあたります。なお、実際の請求では端数処理や制度上の加算・減算があり、単純な掛け算と一致しないことがあります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "負担割合はどうやって決まりますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "負担割合は、年齢や所得などによって決まります。一般には3割、一定の年齢層では2割、後期高齢者では1割などとされ、区分によって異なります。公的医療保険が使えない場合は負担割合が10割（自費・自由診療）となり、総医療費がそのまま支払額になります。訪日客の受診は原則としてこの自費10割にあたります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "診療行為コードとは何ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "診療行為コードは、診療報酬の計算に使われる診療行為（検査・処置・投薬など）を識別するための符号です。公定価格である点数表では、診療行為が区分番号で整理されています。明細書や請求データに並ぶ数字は、この区分やコードに対応しており、どの行為がどの点数で算定されたかを示します。コードの意味を一つずつ暗記する必要はなく、点数と金額の対応を確認できれば明細書は読み解けます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "自費10割と保険診療は何が違いますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "保険診療は、公的医療保険が適用される診療で、点数表にもとづいて点数が算定され、受診者は負担割合分だけを支払います。一方、自費（自由診療）は公的医療保険が適用されず、医療費の全額が自己負担となり、価格設定も医療機関ごとに異なります。訪日客の受診や、保険適用外の治療が自費にあたり、明細書の発行方法や記載内容も保険診療とは異なることがあります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "診療明細書は誰でももらえますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "保険診療では、医療の透明化の観点から診療明細書を交付する医療機関が増えています。一方、自費診療では明細書を発行しない医療機関もあります。帰国後の保険請求などで必要になる場合は、受付や会計のときに「領収書と診療明細書をください」と伝えておくと安心です。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="wrap header-inner">
+    <a class="brand" href="./" style="text-decoration:none;color:inherit;">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="currentColor"/>
+        <path d="M16 6v20M6 16h20" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-text">
+        <strong>医療証明書類 作成ツール</strong>
+        <span>書き方ガイド</span>
+      </div>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-primary" href="./">今すぐ無料で作成する</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="guide-col">
+
+    <nav class="breadcrumb no-print" aria-label="パンくず">
+      <ol>
+        <li><a href="./">医療証明書類 PDF 生成ツール</a></li>
+        <li>書き方ガイド</li>
+        <li aria-current="page">診療明細書の見方・各項目の意味を解説</li>
+      </ol>
+    </nav>
+
+    <article class="guide">
+      <h1>診療明細書の見方・各項目の意味を解説</h1>
+      <p class="guide-meta">更新日：2026年10月12日</p>
+      <p class="guide-lead">
+        病院やクリニックの会計で受け取る<strong>診療明細書</strong>には、<strong>保険点数</strong>や<strong>負担割合</strong>、
+        そして数字の羅列のような<strong>診療行為コード</strong>が並んでいて、はじめは戸惑うものです。
+        この記事では、明細書に載る項目を一つずつ取り上げ、<strong>点数の意味</strong>、<strong>負担割合ごとの支払額の考え方</strong>、
+        <strong>診療行為コードの読み方</strong>、そして<strong>自費10割との違い</strong>を順に解説します。
+      </p>
+
+      <div class="guide-cta-box">
+        <p><strong>明細書の形式を確認したいときに。</strong>診療内容・保険点数・金額を入力するだけで、集計された診療明細書の見本をA4 PDFで作成できます。無料・登録不要。</p>
+        <a class="btn btn-primary" href="./">無料で作成する</a>
+      </div>
+
+      <h2>1. 診療明細書は何のためにあるのか</h2>
+      <p>
+        診療明細書は、その受診で行われた<strong>診療の内容を項目ごとに示した書類</strong>です。
+        領収書が「支払った総額」を示すのに対して、診療明細書は「何に、いくらかかったのか」を内訳で示します。
+        この2つは役割が異なり、保険請求や医療費控除では、両方をあわせて求められることがあります。
+      </p>
+      <p>
+        医療機関によって「診療明細書」「明細書」「診療報酬明細書」など呼び方が異なることもありますが、
+        受診者に交付されるという点では同じ性格の書類です。近年は医療の透明化の観点から、交付する医療機関が増えています。
+      </p>
+
+      <h2>2. 明細書に並ぶ基本項目</h2>
+      <p>まずは、明細書のどこに何が書かれているかを押さえましょう。おおむね次の項目が記載されます。</p>
+      <table class="guide-table">
+        <thead>
+          <tr><th>項目</th><th>意味</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>診療年月日</td><td>実際に受診した日。書類の発行日とは異なることが多い。</td></tr>
+          <tr><td>診療科・傷病名</td><td>受診した診療科と、診断された傷病名。</td></tr>
+          <tr><td>診療内容（項目名）</td><td>初診料・再診料・検査料・処置料・投薬料など、行った診療の内訳。</td></tr>
+          <tr><td>保険点数</td><td>各項目に割り当てられた点数。診療報酬計算の基礎になる。</td></tr>
+          <tr><td>総点数</td><td>明細行の点数を合計したもの。</td></tr>
+          <tr><td>総医療費（10割）</td><td>点数を金額に換算した、医療費の総額。</td></tr>
+          <tr><td>保険給付額</td><td>公的医療保険が負担する部分。</td></tr>
+          <tr><td>自己負担額</td><td>実際に受診者が支払う金額。</td></tr>
+          <tr><td>処方薬</td><td>処方された薬の名称・用法用量・日数（附記される場合）。</td></tr>
+        </tbody>
+      </table>
+      <p>
+        最初に見るべきは<strong>総点数</strong>と<strong>自己負担額</strong>です。この2つが、明細書を読むうえでの出発点になります。
+      </p>
+
+      <h2>3. 保険点数から金額を計算する</h2>
+      <p>
+        保険点数は、診療行為ごとに定められた<strong>点数の単位</strong>です。金額への換算は、<strong>原則として1点＝10円</strong>で行います。
+        たとえば、ある項目が290点であれば2,900円という考え方になります。
+      </p>
+      <p>
+        明細行の点数をすべて足したものが<strong>総点数</strong>で、これを10倍した金額が<strong>総医療費（10割）</strong>です。
+        そして、実際に支払う<strong>自己負担額</strong>は、総医療費に<strong>負担割合</strong>を掛けた額になります。
+      </p>
+      <p class="guide-note">
+        実際の医療機関の計算では、端数処理や制度上の加算・減算があり、単純な掛け算と一致しないことがあります。ここで説明しているのは、明細書を読むための基本的な考え方です。
+      </p>
+
+      <h2>4. 負担割合で支払額が変わる</h2>
+      <p>
+        同じ診療内容でも、<strong>負担割合</strong>が変われば支払う金額は変わります。負担割合は、年齢や所得などによって区分されます。
+      </p>
+      <ul>
+        <li><strong>3割</strong> — 一般の就業者など。総医療費6,090円なら自己負担1,827円。</li>
+        <li><strong>2割</strong> — 一定の年齢層など。</li>
+        <li><strong>1割</strong> — 後期高齢者など。</li>
+        <li><strong>10割（自費・自由診療）</strong> — 公的医療保険が使えない場合。訪日客の受診や、保険適用外の自由診療がこれにあたる。</li>
+      </ul>
+      <p>
+        明細書を見るときは、<strong>「総医療費（10割）はいくらか」</strong>と<strong>「自分の負担割合は何割か」</strong>を分けて考えると整理しやすくなります。
+        総医療費は診療内容そのものの価格、自己負担額はそのうち自分が払う分、という関係です。
+      </p>
+
+      <h2>5. 診療行為コードの読み方</h2>
+      <p>
+        明細書や請求データには、点数と並んで数字の並びが記載されていることがあります。これが<strong>診療行為コード</strong>です。
+      </p>
+      <p>
+        日本では、公的医療保険の診療報酬について<strong>点数表</strong>が定められており、検査・処置・投薬・画像診断といった診療行為が、
+        <strong>区分番号</strong>のような符号で整理されています。診療行為コードは、この区分や、電子的な請求に用いられる符号に対応し、
+        「どの行為が、いくらの点数で算定されたか」を示します。
+      </p>
+      <h3>コードは暗記しなくてよい</h3>
+      <p>
+        コードの意味を一つずつ覚える必要はありません。明細書を読むうえで大切なのは、次の3点です。
+      </p>
+      <ul>
+        <li><strong>項目名と点数が対応しているか</strong> — 行ごとに、行為の名称と点数の組を確認します。</li>
+        <li><strong>点数の合計が総点数と一致するか</strong> — 明細行の合計と、下部の総点数を見比べます。</li>
+        <li><strong>総点数から総医療費が導かれているか</strong> — 総点数を10倍した額が総医療費の目安です。</li>
+      </ul>
+      <p>
+        この3点を確認すれば、数字の並びに圧倒されることなく、明細書の内容を追うことができます。
+        不明な項目がある場合は、医療機関の窓口に尋ねるのが確実です。
+      </p>
+
+      <div class="guide-cta-box">
+        <p><strong>項目と点数を整理して確認したいときに。</strong>診療内容・保険点数・金額を入力すると、合計と自己負担額を自動計算した明細書の見本を作成できます。</p>
+        <a class="btn btn-primary" href="./">無料で試す</a>
+      </div>
+
+      <h2>6. 自費10割との違い</h2>
+      <p>
+        ここまで説明してきたのは、公的医療保険が適用される<strong>保険診療</strong>の明細書です。
+        これに対して、公的医療保険が適用されない<strong>自費（自由診療）</strong>では、明細書の性格が変わります。
+      </p>
+      <table class="guide-table">
+        <thead>
+          <tr><th>観点</th><th>保険診療</th><th>自費（自由診療）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>負担割合</td><td>1〜3割など（区分による）</td><td>10割（全額自己負担）</td></tr>
+          <tr><td>価格の決まり方</td><td>点数表にもとづく</td><td>医療機関ごとの設定</td></tr>
+          <tr><td>点数表示</td><td>保険点数が記載される</td><td>点数ではなく金額で示されることが多い</td></tr>
+          <tr><td>明細書の交付</td><td>交付する医療機関が増えている</td><td>発行しない医療機関もある</td></tr>
+        </tbody>
+      </table>
+      <p>
+        訪日客の受診は、原則として日本の公的医療保険の対象外であるため、この<strong>自費10割</strong>にあたります。
+        自費診療では、保険診療とは異なる価格設定がされることがあり、明細書を発行しない医療機関もあります。
+        帰国後に保険金を請求する予定があるなら、受付や会計のときに<strong>「領収書と診療明細書をください」</strong>と伝えておくと安心です。
+      </p>
+      <p>
+        書類の形式を事前に確認しておきたいときは、<a href="./">医療証明書類 PDF 生成ツール</a>で
+        項目を並べた見本を作り、構成を把握しておくのも一つの方法です。
+      </p>
+
+      <h2>7. 明細書を読むときの注意点</h2>
+      <p>最後に、明細書を確認するときに気をつけたい点を整理します。</p>
+      <ul>
+        <li><strong>発行日と受診日は別のもの</strong> — 診療年月日は実際に受診した日、発行日は書類を発行した日です。</li>
+        <li><strong>点数は金額そのものではない</strong> — 点数のままでは支払額と一致しません。1点＝10円で換算して考えます。</li>
+        <li><strong>総医療費と自己負担額を混同しない</strong> — 明細書には10割の金額が載っていることがあり、それが支払額とは限りません。</li>
+        <li><strong>処方薬は附記されることがある</strong> — 院外処方の場合、薬の情報が別になることもあります。</li>
+        <li><strong>端数処理や加算がある</strong> — 単純計算と一致しない場合があります。</li>
+      </ul>
+      <p>
+        明細書は、医療機関が発行する正式な書類です。本記事は読み方を理解するための整理であり、
+        記載内容について不明な点は、遠慮なく医療機関の窓口で確認してください。
+      </p>
+
+      <section class="guide-faq" aria-labelledby="faqTitle">
+        <h2 id="faqTitle">よくある質問</h2>
+        <dl>
+          <dt>保険点数はどうやって金額に換算しますか？</dt>
+          <dd>保険点数は、原則として1点＝10円で換算します。たとえば目安として290点の項目なら2,900円です。1回の受診の各項目の点数を合計したものが総点数で、これを10倍した金額が総医療費（10割）にあたります。なお、実際の請求では端数処理や制度上の加算・減算があり、単純な掛け算と一致しないことがあります。</dd>
+
+          <dt>負担割合はどうやって決まりますか？</dt>
+          <dd>負担割合は、年齢や所得などによって決まります。一般には3割、一定の年齢層では2割、後期高齢者では1割などとされ、区分によって異なります。公的医療保険が使えない場合は負担割合が10割（自費・自由診療）となり、総医療費がそのまま支払額になります。訪日客の受診は原則としてこの自費10割にあたります。</dd>
+
+          <dt>診療行為コードとは何ですか？</dt>
+          <dd>診療行為コードは、診療報酬の計算に使われる診療行為（検査・処置・投薬など）を識別するための符号です。公定価格である点数表では、診療行為が区分番号で整理されています。明細書や請求データに並ぶ数字は、この区分やコードに対応しており、どの行為がどの点数で算定されたかを示します。コードの意味を一つずつ暗記する必要はなく、点数と金額の対応を確認できれば明細書は読み解けます。</dd>
+
+          <dt>自費10割と保険診療は何が違いますか？</dt>
+          <dd>保険診療は、公的医療保険が適用される診療で、点数表にもとづいて点数が算定され、受診者は負担割合分だけを支払います。一方、自費（自由診療）は公的医療保険が適用されず、医療費の全額が自己負担となり、価格設定も医療機関ごとに異なります。訪日客の受診や、保険適用外の治療が自費にあたり、明細書の発行方法や記載内容も保険診療とは異なることがあります。</dd>
+
+          <dt>診療明細書は誰でももらえますか？</dt>
+          <dd>保険診療では、医療の透明化の観点から診療明細書を交付する医療機関が増えています。一方、自費診療では明細書を発行しない医療機関もあります。帰国後の保険請求などで必要になる場合は、受付や会計のときに「領収書と診療明細書をください」と伝えておくと安心です。</dd>
+        </dl>
+      </section>
+
+      <div class="guide-cta-foot">
+        <h2>診療明細書・領収書・診断書（見本）をまとめて作成</h2>
+        <p>1回の入力で3通をA4 PDFに。保険点数からの自動集計、自費10割の切り替えにも対応。登録不要、入力内容はサーバーへ送信されません。</p>
+        <a class="btn btn-primary" href="./">今すぐ無料で作成する</a>
+      </div>
+
+      <p class="guide-foot-note">
+        ※ 本記事は一般的な情報の整理であり、医療・税務・保険上の取扱いを保証するものではありません。点数の算定や負担割合の区分は、制度改正や個別の事情によって変わることがあります。記載内容の最終確認は、医療機関・保険会社・税務署等の窓口でご確認ください。
+        本サイトのツールが出力する書類は形式確認・下書き用のテンプレートであり、正式な書類として提出することはできません。
+      </p>
+    </article>
+
+    <section class="guide-related no-print" aria-labelledby="relTitle">
+      <h2 id="relTitle">あわせて読みたい</h2>
+      <ul>
+        <li><a href="hoken-seikyu.html">帰国後の海外旅行保険・民間保険の請求方法ガイド<span class="rel-desc">診断書・領収書・明細書の揃え方、翻訳、提出期限</span></a></li>
+        <li><a href="iryohi-koujo.html">診療明細書の見方・医療費控除ガイド<span class="rel-desc">医療費控除に使う領収書の要件と保管期間</span></a></li>
+        <li><a href="./">医療証明書類 PDF 生成ツール<span class="rel-desc">領収書・診療明細書・診断書（見本）を1回の入力でまとめて作成</span></a></li>
+        <li><a href="privacy.html">プライバシーポリシー<span class="rel-desc">入力内容はサーバーへ送信しません。情報の取扱い方針</span></a></li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="wrap">
+    <p>医療証明書類 作成ツール — 領収書・診療明細書・診断書（見本）をまとめて作る無料ツール</p>
+    <p>
+      <a href="./">ツールを使う</a> ・
+      <a href="privacy.html">プライバシーポリシー</a> ・
+      <a href="company.html">運営者情報</a> ・
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHGUfgAlViT3TFiVtJi_EpJ4ioUpd9oGyaJ7rehEV-gBH_PA/viewform?usp=pp_url&amp;entry.1745177199=%E5%8C%BB%E7%99%82%E8%A8%BC%E6%98%8E%E6%9B%B8%E9%A1%9E" target="_blank" rel="noopener">ご意見・フィードバック</a>
+    </p>
+    <p style="margin-top:8px;font-size:12.5px;opacity:.75;">関連ツール：<a href="https://www.reveriel.com/hanko-generator/">判子・印鑑</a> ・ <a href="https://www.reveriel.com/taishoku-form/">退職届</a> ・ <a href="https://www.reveriel.com/shakuyo-contract/">借用書</a> ・ <a href="https://www.reveriel.com/ryoshusho-pdf/">領収書</a> ・ <a href="https://www.reveriel.com/japan-invoice-pdf/">適格請求書</a></p>
+  </div>
+</footer>
+
+<!-- フィードバックFAB（右下固定・常時表示） -->
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSfHGUfgAlViT3TFiVtJi_EpJ4ioUpd9oGyaJ7rehEV-gBH_PA/viewform?usp=pp_url&amp;entry.1745177199=%E5%8C%BB%E7%99%82%E8%A8%BC%E6%98%8E%E6%9B%B8%E9%A1%9E" target="_blank" rel="noopener" class="feedback-fab" aria-label="ご意見・フィードバックを送る">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span>ご意見・フィードバック</span>
+</a>
+</body>
+</html>
