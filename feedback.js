@@ -9,7 +9,7 @@
   'use strict';
 
   // ▼ デプロイ後にここへ GAS のウェブアプリ URL を貼る（例は README 参照）
-  var ENDPOINT = '';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCMSnp3I7g-JPjRKi_dHPaBqPw5tUmVX5faf9L62p5SUoiO6M0Y1dJK1fKH-GIOis6/exec';
 
   if (!ENDPOINT) return;
   if (window.__rvFeedbackLoaded) return;
