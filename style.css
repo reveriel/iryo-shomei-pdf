@@ -424,7 +424,24 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 
 /* ---------------- プレビュー ---------------- */
 
-.preview-pane { position: static; }
+.preview-pane {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  padding: 2px 4px 16px;
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 1080px) {
+  .preview-pane {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+  }
+}
 
 .preview-bar {
   display: flex;
@@ -930,6 +947,7 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
     gap: 0 !important;
     position: static !important;
     overflow: visible !important;
+    max-height: none !important;
     box-shadow: none !important;
     border: 0 !important;
     background: transparent !important;
