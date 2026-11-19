@@ -109,7 +109,7 @@
       </svg>
       <div class="brand-text">
         <strong data-i18n="brandName">医療証明書類 作成ツール</strong>
-        <span data-i18n="tagline">免费・无需注册・浏览器内完成</span>
+        <span data-i18n="tagline">無料・登録不要・ブラウザだけで完結</span>
       </div>
     </div>
 
@@ -120,10 +120,10 @@
           <path d="M6 7V3h8v4M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-4A1.5 1.5 0 0 1 4.5 8h11A1.5 1.5 0 0 1 17 9.5v4a1.5 1.5 0 0 1-1.5 1.5H14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           <rect x="6" y="12" width="8" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/>
         </svg>
-        <span data-i18n="btnPrint">打印 / 保存 PDF</span>
+        <span data-i18n="btnPrint">印刷 / PDF保存</span>
       </button>
-      <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="btnSample">一键填入示例</button>
-      <button type="button" class="btn btn-ghost" id="resetBtn" data-i18n="btnReset">清空重填</button>
+      <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="btnSample">記入例を入れる</button>
+      <button type="button" class="btn btn-ghost" id="resetBtn" data-i18n="btnReset">リセット</button>
     </div>
   </div>
 </header>
@@ -137,8 +137,8 @@
   <!-- ============ 入力フォーム ============ -->
   <section class="pane form-pane no-print" aria-label="入力フォーム">
     <div class="pane-head">
-      <h2 data-i18n="formTitle">输入一次就诊信息，生成一套凭证</h2>
-      <p class="hint" data-i18n="formHint">左侧填写，右侧实时预览三张日文凭证。最后点「打印 / 保存 PDF」合并输出为一份 A4 PDF。</p>
+      <h2 data-i18n="formTitle">1回の入力で、3通の書類を作成</h2>
+      <p class="hint" data-i18n="formHint">左側に入力すると、右側のプレビューにすぐ反映されます。最後に「印刷 / PDF保存」で3通をまとめて出力できます。</p>
     </div>
 
     <!-- 合規の注意書き（中英併記・常時表示） -->
@@ -148,8 +148,8 @@
         <path d="M10 8v4.2M10 14.6v.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
       <div>
-        <strong data-i18n="legalTitle">本工具为格式参考・下書き模板</strong>
-        <p data-i18n="legalZh">本工具为就诊凭证的格式参考与下書き模板。正式的領収書・診療明細書由医疗机构开具，正式診断書必须由医师作成・署名・押印。本工具生成的文书不能作为正式凭证提交。</p>
+        <strong data-i18n="legalTitle">本ツールは形式確認・下書き用テンプレートです</strong>
+        <p data-i18n="legalZh">本ツールは診療に関する書類の形式確認・下書き用テンプレートです。正式な領収書・診療明細書は医療機関が発行し、正式な診断書は必ず医師が作成・署名・押印したものをご使用ください。本ツールが生成した文書を正式な証明書類として提出することはできません。</p>
         <p class="legal-ja" lang="ja">本ツールは診療に関する書類の形式確認・下書き用テンプレートです。正式な診断書は必ず医師が作成・署名・押印したものをご使用ください。</p>
       </div>
     </div>
@@ -158,18 +158,18 @@
 
       <!-- ---------- 共通項目 ---------- -->
       <fieldset class="card">
-        <legend><span data-i18n="legendCommon">基本信息（三张凭证共用）</span><span class="req-badge" data-i18n="badgeOnce">填一次即可</span></legend>
+        <legend><span data-i18n="legendCommon">基本情報（3通で共通）</span><span class="req-badge" data-i18n="badgeOnce">1回の入力でOK</span></legend>
 
         <div class="field">
-          <label for="instName" data-i18n="lblInstName">医疗机构名称</label>
+          <label for="instName" data-i18n="lblInstName">医療機関名</label>
           <input type="text" id="instName" name="instName" data-i18n-ph="phInst" placeholder="例：佐藤内科クリニック">
-          <p class="help" data-i18n="helpInstTemplate">可选：从下方「常见医院」选择后自动填入名称，地址・电话・医生请按实际就诊医院填写。</p>
+          <p class="help" data-i18n="helpInstTemplate">任意：下の「よくある病院」から選ぶと名称が自動入力されます。住所・電話・医師名は実際に受診した病院をご記入ください。</p>
         </div>
 
         <div class="field">
-          <label for="instTemplate" data-i18n="lblInstTemplate">常见医院（模板・可选）</label>
+          <label for="instTemplate" data-i18n="lblInstTemplate">よくある病院（テンプレート・任意）</label>
           <select id="instTemplate" name="instTemplate">
-            <option value="" selected data-i18n="optChooseHospital">—— 请选择（或手动填写上方名称）——</option>
+            <option value="" selected data-i18n="optChooseHospital">—— 選択してください（上の名称を手入力してもOK）——</option>
             <option value="聖路加国際病院">聖路加国際病院（東京・中央区）</option>
             <option value="順天堂大学医学部附属順天堂医院">順天堂大学医学部附属順天堂医院（東京・文京区）</option>
             <option value="東京大学医学部附属病院">東京大学医学部附属病院（東京・文京区）</option>
@@ -185,35 +185,35 @@
         </div>
 
         <div class="field">
-          <label for="instAddress" data-i18n="lblInstAddress">所在地（地址）</label>
+          <label for="instAddress" data-i18n="lblInstAddress">所在地</label>
           <input type="text" id="instAddress" name="instAddress" placeholder="〒150-0002 東京都渋谷区渋谷1-2-3 サンプルビル2F">
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="instTel" data-i18n="lblInstTel">电话号码</label>
+            <label for="instTel" data-i18n="lblInstTel">電話番号</label>
             <input type="text" id="instTel" name="instTel" inputmode="tel" placeholder="03-1234-5678">
           </div>
           <div class="field">
-            <label for="doctorName" data-i18n="lblDoctor">医师姓名</label>
+            <label for="doctorName" data-i18n="lblDoctor">医師名</label>
             <input type="text" id="doctorName" name="doctorName" data-i18n-ph="phDoctor" placeholder="例：佐藤 一郎">
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="patientName" data-i18n="lblPatient">患者姓名</label>
+            <label for="patientName" data-i18n="lblPatient">患者氏名</label>
             <input type="text" id="patientName" name="patientName" data-i18n-ph="phPatient" placeholder="例：田中 健太">
           </div>
           <div class="field">
-            <label for="patientKana" data-i18n="lblKana">フリガナ（假名）</label>
+            <label for="patientKana" data-i18n="lblKana">フリガナ</label>
             <input type="text" id="patientKana" name="patientKana" data-i18n-ph="phKana" placeholder="例：タナカ ケンタ">
           </div>
         </div>
 
         <div class="field-row three">
           <div class="field">
-            <label for="sex" data-i18n="lblSex">性别</label>
+            <label for="sex" data-i18n="lblSex">性別</label>
             <select id="sex" name="sex">
               <option value="男性">男性</option>
               <option value="女性">女性</option>
@@ -221,41 +221,41 @@
             </select>
           </div>
           <div class="field">
-            <label for="birthDate" data-i18n="lblBirth">出生日期</label>
+            <label for="birthDate" data-i18n="lblBirth">生年月日</label>
             <input type="date" id="birthDate" name="birthDate">
           </div>
           <div class="field">
-            <label for="ageOut" data-i18n="lblAge">年龄（自动计算）</label>
+            <label for="ageOut" data-i18n="lblAge">年齢（自動計算）</label>
             <input type="text" id="ageOut" name="ageOut" readonly tabindex="-1">
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="visitDate" data-i18n="lblVisitDate">就诊日期</label>
+            <label for="visitDate" data-i18n="lblVisitDate">診察日</label>
             <input type="date" id="visitDate" name="visitDate">
           </div>
           <div class="field">
-            <label for="issueDate" data-i18n="lblIssueDate">发行日期</label>
+            <label for="issueDate" data-i18n="lblIssueDate">発行日</label>
             <input type="date" id="issueDate" name="issueDate">
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="department" data-i18n="lblDept">诊疗科</label>
+            <label for="department" data-i18n="lblDept">診療科</label>
             <input type="text" id="department" name="department" data-i18n-ph="phDept" placeholder="例：内科">
           </div>
           <div class="field">
-            <label for="diseaseName" data-i18n="lblDisease">傷病名（病名）</label>
+            <label for="diseaseName" data-i18n="lblDisease">傷病名</label>
             <input type="text" id="diseaseName" name="diseaseName" data-i18n-ph="phDisease" placeholder="例：高血圧症">
           </div>
         </div>
 
         <div class="field">
-          <label for="diseaseTemplate" data-i18n="lblDiseaseTemplate">常见疾病（模板・可选）</label>
+          <label for="diseaseTemplate" data-i18n="lblDiseaseTemplate">よくある傷病名（テンプレート・任意）</label>
           <select id="diseaseTemplate" name="diseaseTemplate">
-            <option value="" selected data-i18n="optChooseDisease">—— 请选择（自动填入病名・诊疗科・所见・转归・疗养期）——</option>
+            <option value="" selected data-i18n="optChooseDisease">—— 選択してください（病名・診療科・所見・転帰・療養期間を自動入力）——</option>
             <option value="急性上気道炎">急性上気道炎（かぜ）</option>
             <option value="インフルエンザ">インフルエンザ（流感）</option>
             <option value="急性胃腸炎">急性胃腸炎</option>
@@ -277,31 +277,31 @@
         <div class="field">
           <label class="check-line" for="sealToggle">
             <input type="checkbox" id="sealToggle" name="sealToggle" checked>
-            <span data-i18n="chkSeal">加盖印章（按医疗机构名・医师名生成朱色圆章）</span>
+            <span data-i18n="chkSeal">印章を付ける（医療機関名・医師名から朱色の丸印を生成）</span>
           </label>
-          <p class="help" data-i18n="helpSeal">开启后，三张凭证的盖章位会显示根据医疗机构名与医师名生成的朱色圆章（下書き用の見本）。关闭后仍保留空白盖章位，便于手工盖章。</p>
+          <p class="help" data-i18n="helpSeal">オンにすると、3通の押印欄に医療機関名・医師名から生成した朱色の丸印（下書き用の見本）を表示します。オフにすると白紙の押印欄のまま残るので、手で押印できます。</p>
         </div>
       </fieldset>
 
       <!-- ---------- ① 領収書 ---------- -->
       <fieldset class="card">
-        <legend><span data-i18n="legendReceipt">① 領収書（收据）</span><span class="req-badge">領収書</span></legend>
+        <legend><span data-i18n="legendReceipt">① 領収書</span><span class="req-badge">領収書</span></legend>
 
         <div class="field">
           <label class="check-line" for="linkReceipt">
             <input type="checkbox" id="linkReceipt" name="linkReceipt" checked>
-            <span data-i18n="chkLink">领收金额与明细的自付额联动</span>
+            <span data-i18n="chkLink">領収金額を明細の自己負担額と連動する</span>
           </label>
         </div>
 
         <div class="field">
-          <label for="receiptAmount" data-i18n="lblReceiptAmount">領収金額（自己负担额）</label>
+          <label for="receiptAmount" data-i18n="lblReceiptAmount">領収金額（自己負担額）</label>
           <input type="text" id="receiptAmount" name="receiptAmount" class="num" inputmode="numeric" placeholder="0">
-          <p class="help" data-i18n="helpReceiptAmount">输入金额即可。勾选上方联动时，此处自动采用诊疗明细的「自己負担額」。</p>
+          <p class="help" data-i18n="helpReceiptAmount">金額を入力します。上の連動にチェックを入れると、明細の自己負担額が自動で入ります。</p>
         </div>
 
         <div class="field">
-          <label for="proviso" data-i18n="lblProviso">但書（用途）</label>
+          <label for="proviso" data-i18n="lblProviso">但書</label>
           <input type="text" id="proviso" name="proviso" value="診療費として">
         </div>
 
@@ -313,13 +313,13 @@
 
       <!-- ---------- ② 診療明細書 ---------- -->
       <fieldset class="card">
-        <legend><span data-i18n="legendStatement">② 診療明細書（费用明细）</span><span class="req-badge" data-i18n="badgeAuto">自动汇总</span></legend>
+        <legend><span data-i18n="legendStatement">② 診療明細書</span><span class="req-badge" data-i18n="badgeAuto">自動集計</span></legend>
 
         <div class="field">
-          <label data-i18n="lblRows">明细行（项目・点数・金额）</label>
+          <label data-i18n="lblRows">明細行（項目・点数・金額）</label>
           <div class="rows" id="detailRows">
             <div class="detail-row row-head">
-              <span data-i18n="thItemName">项目名</span>
+              <span data-i18n="thItemName">項目名</span>
               <span data-i18n="thPoints">保険点数</span>
               <span data-i18n="thAmount">金額（円）</span>
               <span class="sr-only"></span>
@@ -327,9 +327,9 @@
             <!-- 行は JS が生成 -->
           </div>
           <button type="button" class="btn btn-ghost btn-sm" id="addRowBtn">
-            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRow">添加明细行</span>
+            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRow">明細行を追加</span>
           </button>
-          <p class="help" data-i18n="helpRows">点数を入力すると、金額（円）が空のときは 1点＝10円 で自動入力します。金額は自由に変更できます。</p>
+          <p class="help" data-i18n="helpRows">点数を入力すると、金額が空のときは 1点＝10円 で自動入力します。金額は自由に変更できます。</p>
 
           <datalist id="itemNameList">
             <option value="初診料"></option>
@@ -349,7 +349,7 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="burdenRate" data-i18n="lblBurden">自己负担比例</label>
+            <label for="burdenRate" data-i18n="lblBurden">負担割合</label>
             <select id="burdenRate" name="burdenRate">
               <option value="30" selected>3割（一般の在职者）</option>
               <option value="20">2割</option>
@@ -358,14 +358,14 @@
             </select>
           </div>
           <div class="field">
-            <label for="selfPayOverride" data-i18n="lblSelfOverride">自己負担額（手动覆盖）</label>
+            <label for="selfPayOverride" data-i18n="lblSelfOverride">自己負担額（手動上書き）</label>
             <input type="text" id="selfPayOverride" name="selfPayOverride" class="num" inputmode="numeric" placeholder="">
-            <p class="help" data-i18n="helpSelfOverride">留空则由负担比例自动计算。填写后以此金额为准。</p>
+            <p class="help" data-i18n="helpSelfOverride">空欄なら負担割合から自動計算します。入力するとその金額が優先されます。</p>
           </div>
         </div>
 
         <div class="field">
-          <label data-i18n="lblRx">处方药附记（可选）</label>
+          <label data-i18n="lblRx">処方薬（任意）</label>
           <div class="rows" id="rxRows">
             <div class="rx-row row-head">
               <span data-i18n="thDrug">薬品名</span>
@@ -375,14 +375,14 @@
             </div>
           </div>
           <button type="button" class="btn btn-ghost btn-sm" id="addRxBtn">
-            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRx">添加处方药</span>
+            <span aria-hidden="true">＋</span> <span data-i18n="btnAddRx">処方薬を追加</span>
           </button>
         </div>
       </fieldset>
 
       <!-- ---------- ③ 診断書 ---------- -->
       <fieldset class="card">
-        <legend><span data-i18n="legendCertificate">③ 診断書（诊断书・見本）</span><span class="req-badge" data-i18n="badgeSample">带見本水印</span></legend>
+        <legend><span data-i18n="legendCertificate">③ 診断書（見本）</span><span class="req-badge" data-i18n="badgeSample">見本の透かし入り</span></legend>
 
         <div class="field">
           <label for="findings" data-i18n="lblFindings">診断内容・所見</label>
@@ -391,17 +391,17 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="periodFrom" data-i18n="lblPeriodFrom">疗养期间（自）</label>
+            <label for="periodFrom" data-i18n="lblPeriodFrom">療養期間（自）</label>
             <input type="date" id="periodFrom" name="periodFrom">
           </div>
           <div class="field">
-            <label for="periodTo" data-i18n="lblPeriodTo">疗养期间（至）</label>
+            <label for="periodTo" data-i18n="lblPeriodTo">療養期間（至）</label>
             <input type="date" id="periodTo" name="periodTo">
           </div>
         </div>
 
         <div class="field">
-          <label for="outcome" data-i18n="lblOutcome">転帰（转归）</label>
+          <label for="outcome" data-i18n="lblOutcome">転帰</label>
           <select id="outcome" name="outcome">
             <option value="治癒">治癒</option>
             <option value="軽快" selected>軽快</option>
@@ -414,13 +414,13 @@
 
         <p class="seal-note">
           <svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M8 1.8 3 3.6v3.6c0 2.8 2 5.2 5 6 3-.8 5-3.2 5-6V3.6L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          <span data-i18n="noteDoctorSeal">正式な診断書は、医師の署名と医療機関の印が必要です。本ツールは署名欄・印欄を空欄で出力します。</span>
+          <span data-i18n="noteDoctorSeal">正式な診断書は、医師の署名と医療機関の印が必要です。本ツールが押印欄に表示する印は下書き用の「見本」で、正式な印ではありません。</span>
         </p>
       </fieldset>
 
       <p class="privacy-note">
         <svg viewBox="0 0 16 16" aria-hidden="true" class="ic"><path d="M8 1.5 3 3.5v4c0 3 2.1 5.6 5 6.5 2.9-.9 5-3.5 5-6.5v-4L8 1.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-        <span data-i18n="privacy">输入内容不会发送到服务器，全部只在你的浏览器内处理。关闭页面后内容即被丢弃。</span>
+        <span data-i18n="privacy">入力した内容はサーバーに送信されません。すべてお使いのブラウザ内だけで処理されます。</span>
       </p>
     </form>
   </section>
@@ -428,7 +428,7 @@
   <!-- ============ プレビュー / 印刷対象 ============ -->
   <section class="pane preview-pane" aria-label="プレビュー">
     <div class="preview-bar no-print">
-      <span class="dot"></span> <span data-i18n="previewBar">预览（A4・三张凭证）</span>
+      <span class="dot"></span> <span data-i18n="previewBar">プレビュー（A4・3通）</span>
     </div>
 
     <div class="paper-wrap">
@@ -635,7 +635,7 @@
 
     <!-- 印刷出力の末尾に出す免責 -->
     <div class="print-disclaimer" lang="zh-CN">
-      <p class="pd-zh">本工具为就诊凭证的格式参考与下書き模板。正式的領収書・診療明細書由医疗机构开具，正式診断書必须由医师作成・署名・押印。本工具生成的文书不能作为正式凭证提交。</p>
+      <p class="pd-zh lang-zh">本工具为就诊凭证的格式参考与下書き模板。正式的領収書・診療明細書由医疗机构开具，正式診断書必须由医师作成・署名・押印。本工具生成的文书不能作为正式凭证提交。</p>
       <p class="pd-ja" lang="ja">本ツールは診療に関する書類の形式確認・下書き用テンプレートです。正式な診断書は必ず医師が作成・署名・押印したものをご使用ください。</p>
     </div>
   </section>
@@ -696,7 +696,7 @@
       <strong>診断書は医師法にもとづき、医師が作成・署名・押印する書類です。</strong>したがって、患者本人や第三者が作成した診断書は正式な書類として扱われず、
       勤務先への提出や保険請求に用いることはできません。他人の署名や印を偽って診断書を作成・使用した場合は、私文書偽造・同行使などの罪に問われる可能性があります。
     </p>
-    <p lang="zh-CN">
+    <p class="lang-zh" lang="zh-CN">
       <strong>診断書（诊断书）受日本《医师法》约束，必须由医师本人作成、署名并押印。</strong>伪造、变造诊断书或冒充医师署名、印章，可能构成「私文書偽造」「同行使」等刑事犯罪。
       本工具输出的诊断书带有斜向「見本（サンプル）」水印，仅用于确认日文诊断书的书写格式与项目，<strong>不能作为正式凭证提交</strong>，也无法替代医院开具的证明。
       需要用于报销、请假、保险理赔或报税时，请向就诊的医疗机构申请正式文书。

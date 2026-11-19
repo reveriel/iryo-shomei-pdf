@@ -1141,3 +1141,6 @@ input:disabled, select:disabled, textarea:disabled { opacity: .55; cursor: not-a
 @media (max-width: 720px) {
   input, select, textarea { font-size: 16px !important; }
 }
+
+/* ===== 中国語ブロックは日本語表示時に隠す ===== */
+html[lang="ja"] .lang-zh { display: none !important; }
