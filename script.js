@@ -366,7 +366,7 @@
                     ja: '医療証明書類 作成ツール — 領収書・診療明細書・診断書（見本）をまとめて作る無料ツール' }
   };
 
-  var lang = 'zh';
+  var lang = 'ja';
 
   function applyI18n(next) {
     lang = next;
